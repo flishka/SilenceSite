@@ -1,5 +1,5 @@
 /* ==============================================================================
-   Silence External 266 · Base Styles & Typography
+   Silence External 266 · Base Canvas with Glass Ambient Orbs
    ============================================================================== */
 
 body {
@@ -7,25 +7,40 @@ body {
     color: var(--text);
     font-family: var(--font-sans);
     font-size: 16px;
+    line-height: 1.6;
     background-image: 
-        radial-gradient(circle at 50% 0%, rgba(124, 58, 237, 0.12) 0%, transparent 50%),
-        radial-gradient(circle at 100% 30%, rgba(0, 229, 255, 0.05) 0%, transparent 40%);
+        radial-gradient(at 10% 20%, rgba(139, 92, 246, 0.15) 0px, transparent 50%),
+        radial-gradient(at 90% 15%, rgba(6, 182, 212, 0.12) 0px, transparent 45%),
+        radial-gradient(at 50% 80%, rgba(124, 58, 237, 0.1) 0px, transparent 60%);
     background-attachment: fixed;
-    transition: background-color var(--transition-slow), color var(--transition-slow);
+    transition: background-color var(--transition-smooth), color var(--transition-smooth);
     overflow-x: hidden;
+    position: relative;
+}
+
+/* Ambient glow backdrop */
+body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.025'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 999;
 }
 
 h1, h2, h3, h4, h5, h6 {
     font-family: var(--font-heading);
     color: var(--text-heading);
-    line-height: 1.2;
-    letter-spacing: -0.02em;
+    line-height: 1.15;
+    letter-spacing: -0.03em;
 }
 
-h1 { font-size: clamp(2.5rem, 5vw, 4rem); font-weight: 700; }
-h2 { font-size: clamp(1.8rem, 3.5vw, 2.5rem); font-weight: 700; }
-h3 { font-size: clamp(1.3rem, 2.5vw, 1.75rem); font-weight: 600; }
-h4 { font-size: 1.2rem; font-weight: 600; }
+h1 { font-size: clamp(2.6rem, 5.5vw, 4.4rem); font-weight: 800; }
+h2 { font-size: clamp(1.9rem, 3.8vw, 2.7rem); font-weight: 700; }
+h3 { font-size: clamp(1.35rem, 2.6vw, 1.85rem); font-weight: 600; }
 
 code, pre, .font-mono {
     font-family: var(--font-mono);
@@ -35,29 +50,34 @@ code, pre, .font-mono {
     width: 100%;
     max-width: var(--container-max);
     margin: 0 auto;
-    padding: 0 1.5rem;
+    padding: 0 1.75rem;
 }
 
 .section {
-    padding: 6rem 0;
+    padding: 7rem 0;
     position: relative;
 }
 
 .section-header {
     text-align: center;
-    max-width: 700px;
-    margin: 0 auto 3.5rem auto;
+    max-width: 680px;
+    margin: 0 auto 4rem auto;
 }
 
 .section-subtitle {
-    color: var(--accent);
+    color: var(--accent-2);
     font-family: var(--font-mono);
-    font-size: 0.85rem;
-    font-weight: 600;
+    font-size: 0.8rem;
+    font-weight: 700;
     text-transform: uppercase;
-    letter-spacing: 0.15em;
-    margin-bottom: 0.5rem;
+    letter-spacing: 0.2em;
+    margin-bottom: 0.75rem;
     display: inline-block;
+    padding: 0.25rem 0.8rem;
+    background: rgba(6, 182, 212, 0.1);
+    border: 1px solid rgba(6, 182, 212, 0.2);
+    border-radius: 20px;
+    backdrop-filter: blur(10px);
 }
 
 .section-desc {
@@ -66,19 +86,19 @@ code, pre, .font-mono {
     font-size: 1.05rem;
 }
 
-/* Scrollbar */
+/* Glass Scrollbar */
 ::-webkit-scrollbar {
-    width: 8px;
-    height: 8px;
+    width: 7px;
+    height: 7px;
 }
 ::-webkit-scrollbar-track {
     background: var(--bg);
 }
 ::-webkit-scrollbar-thumb {
-    background: var(--surface-3);
-    border-radius: 4px;
+    background: rgba(255, 255, 255, 0.15);
+    border-radius: 10px;
+    backdrop-filter: blur(8px);
 }
 ::-webkit-scrollbar-thumb:hover {
     background: var(--accent);
 }
-

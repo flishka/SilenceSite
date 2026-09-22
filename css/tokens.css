@@ -1,72 +1,68 @@
 /* ==============================================================================
-   Silence External 266 · Design Tokens & CSS Variables
+   Silence External 266 · Ultra-Modern Glassmorphism & Cyber Tokens
    ============================================================================== */
 
 :root {
-    /* Dark Theme (Default) */
-    --bg: #0A0A0F;
-    --surface: #12121A;
-    --surface-2: #1A1A24;
-    --surface-3: #222230;
-    --accent: #7C3AED;
-    --accent-hover: #6D28D9;
-    --accent-glow: rgba(124, 58, 237, 0.45);
-    --accent-2: #00E5FF;
-    --accent-2-glow: rgba(0, 229, 255, 0.4);
-    --text: #E5E7EB;
-    --text-heading: #F9FAFB;
-    --muted: #6B7280;
-    --muted-light: #9CA3AF;
-    --border: rgba(255, 255, 255, 0.08);
-    --border-accent: rgba(124, 58, 237, 0.4);
+    /* Deep OLED & Glass Canvas */
+    --bg: #07070b;
+    --bg-secondary: #0b0c12;
     
-    /* Semantic Status Colors */
-    --status-undetected: #10B981;
-    --status-undetected-glow: rgba(16, 185, 129, 0.45);
-    --status-updating: #F59E0B;
-    --status-updating-glow: rgba(245, 158, 11, 0.45);
-    --status-down: #EF4444;
-    --status-down-glow: rgba(239, 68, 68, 0.45);
+    /* Glassmorphism Layers */
+    --glass-bg: rgba(18, 18, 26, 0.55);
+    --glass-bg-hover: rgba(26, 26, 38, 0.7);
+    --glass-border: rgba(255, 255, 255, 0.08);
+    --glass-border-hover: rgba(124, 58, 237, 0.4);
+    --glass-blur: blur(16px);
+    --glass-subtle: rgba(255, 255, 255, 0.03);
 
-    /* Geometry & Effects */
-    --radius: 14px;
-    --radius-sm: 10px;
-    --radius-xs: 6px;
-    --shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
-    --shadow-card: 0 4px 20px rgba(0, 0, 0, 0.35);
-    --glow: 0 0 40px rgba(124, 58, 237, 0.35);
-    --transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
-    --transition-slow: all 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+    /* Cyber Violet & Ice Cyan Accents */
+    --accent: #8b5cf6;
+    --accent-hover: #7c3aed;
+    --accent-glow: rgba(139, 92, 246, 0.45);
+    --accent-gradient: linear-gradient(135deg, #a78bfa 0%, #8b5cf6 50%, #06b6d4 100%);
+    --accent-2: #06b6d4;
+    --accent-2-glow: rgba(6, 182, 212, 0.4);
+    
+    /* Text */
+    --text: #f1f5f9;
+    --text-heading: #ffffff;
+    --muted: #64748b;
+    --muted-light: #94a3b8;
+    --border: rgba(255, 255, 255, 0.07);
+
+    /* Status Colors */
+    --status-undetected: #10b981;
+    --status-undetected-glow: rgba(16, 185, 129, 0.4);
+    --status-updating: #f59e0b;
+    --status-down: #ef4444;
+
+    /* Radii & Shadows */
+    --radius: 18px;
+    --radius-sm: 12px;
+    --radius-xs: 8px;
+    --shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+    --shadow-glass: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+    --transition: all 0.35s cubic-bezier(0.25, 1, 0.5, 1);
+    --transition-smooth: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
 
     /* Typography */
-    --font-heading: 'Space Grotesk', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-    --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    --font-heading: 'Space Grotesk', -apple-system, BlinkMacSystemFont, sans-serif;
+    --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
     --font-mono: 'JetBrains Mono', monospace;
-
-    /* Layout Constraints */
     --container-max: 1200px;
-    --navbar-height: 72px;
+    --navbar-height: 76px;
 }
 
-/* Light Theme Override */
 [data-theme="light"] {
-    --bg: #F3F4F6;
-    --surface: #FFFFFF;
-    --surface-2: #F9FAFB;
-    --surface-3: #E5E7EB;
-    --accent: #6D28D9;
-    --accent-hover: #5B21B6;
-    --accent-glow: rgba(109, 40, 217, 0.25);
-    --accent-2: #0891B2;
-    --accent-2-glow: rgba(8, 145, 178, 0.25);
-    --text: #1F2937;
-    --text-heading: #111827;
-    --muted: #6B7280;
-    --muted-light: #4B5563;
-    --border: rgba(0, 0, 0, 0.1);
-    --border-accent: rgba(109, 40, 217, 0.3);
-    --shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
-    --shadow-card: 0 4px 20px rgba(0, 0, 0, 0.06);
-    --glow: 0 0 40px rgba(109, 40, 217, 0.2);
+    --bg: #f8fafc;
+    --bg-secondary: #f1f5f9;
+    --glass-bg: rgba(255, 255, 255, 0.7);
+    --glass-bg-hover: rgba(255, 255, 255, 0.9);
+    --glass-border: rgba(0, 0, 0, 0.07);
+    --glass-border-hover: rgba(139, 92, 246, 0.4);
+    --text: #0f172a;
+    --text-heading: #020817;
+    --muted: #94a3b8;
+    --muted-light: #475569;
+    --border: rgba(0, 0, 0, 0.08);
 }
-
