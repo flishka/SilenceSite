@@ -1,318 +1,212 @@
 <!DOCTYPE html>
-<html lang="ru" data-theme="dark">
+<html lang="ru">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Silence External 266 · Private Rust Devblog & Status</title>
-    <meta name="description" content="Официальный технический девблог и мониторинг статуса приватного external-модуля Silence External 266 для Rust. Статус детекта, changelog, баллистика, ESP.">
-    <meta name="keywords" content="Silence, Rust, External, Cheat, Devblog, Bypass, EAC, Undetected, ESP, Aim, Recoil">
-    <meta name="robots" content="index, follow">
-    <link rel="canonical" href="https://silencedev.github.io/">
+    <title>Silence External · Devblog 266</title>
+    <meta name="description" content="Строгий приватный комплекс Silence для Rust Devblog 266. Высокопроизводительный драйвер ядра, нулевой инпут-лаг, DirectX 11.">
 
-    <!-- Open Graph / Facebook -->
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="https://silencedev.github.io/">
-    <meta property="og:title" content="Silence External 266 · Private Rust Devblog">
-    <meta property="og:description" content="Технический девблог, обновления и мониторинг статуса гипервизорного external-модуля Silence.">
-    <meta property="og:image" content="https://silencedev.github.io/assets/og/preview.png">
-
-    <!-- Twitter -->
-    <meta property="twitter:card" content="summary_large_image">
-    <meta property="twitter:url" content="https://silencedev.github.io/">
-    <meta property="twitter:title" content="Silence External 266 · Devblog & Detection Status">
-    <meta property="twitter:description" content="Безопасный external софт для Rust. Статус детекта в реальном времени, подробный список фичей.">
-    <meta property="twitter:image" content="https://silencedev.github.io/assets/og/preview.png">
-
-    <!-- Google Fonts -->
+    <!-- Google Fonts: Inter -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 
-    <!-- CSS (v3 cache buster) -->
-    <link rel="stylesheet" href="css/reset.css?v=3">
-    <link rel="stylesheet" href="css/tokens.css?v=3">
-    <link rel="stylesheet" href="css/base.css?v=3">
-    <link rel="stylesheet" href="css/components.css?v=3">
-    <link rel="stylesheet" href="css/public.css?v=3">
+    <!-- Stylesheets with version query -->
+    <link rel="stylesheet" href="css/tokens.css?v=sky">
+    <link rel="stylesheet" href="css/base.css?v=sky">
+    <link rel="stylesheet" href="css/components.css?v=sky">
+    <link rel="stylesheet" href="css/public.css?v=sky">
 
-    <!-- Supabase CDN -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body>
+
+    <!-- Ambient Background Elements -->
+    <div class="ambient-orb orb-1"></div>
+    <div class="ambient-orb orb-2"></div>
+    <canvas id="ambient-canvas"></canvas>
+    <div class="cursor-spotlight"></div>
+    <div class="noise-overlay"></div>
+    <div class="light-beam"></div>
 
     <!-- Sticky Navbar -->
     <header class="navbar">
         <div class="container nav-container">
             <a href="#hero" class="nav-brand">
-                <div class="nav-brand-logo">S</div>
-                <span>Silence <span class="badge font-mono val-app-version">v266</span></span>
+                <div class="nav-brand-mark">S</div>
+                <span>Silence <span style="color:var(--text-secondary);font-weight:400;font-size:0.9rem;">266</span></span>
             </a>
 
             <nav class="nav-links">
-                <a href="#hero" class="nav-link">Главная</a>
+                <a href="#hero" class="nav-link">Обзор</a>
+                <a href="#features" class="nav-link">Возможности</a>
+                <a href="#metrics" class="nav-link">Метрики</a>
                 <a href="#changelog" class="nav-link">Девблог</a>
-                <a href="#features" class="nav-link">Функционал</a>
-                <a href="#status" class="nav-link">Статус</a>
-                <a href="#roadmap" class="nav-link">Roadmap</a>
-                <a href="#media" class="nav-link">Медиа</a>
-                <a href="#faq" class="nav-link">FAQ</a>
                 <a href="#access" class="nav-link">Доступ</a>
             </nav>
 
             <div class="nav-actions">
-                <div id="nav-status-badge" class="status-badge undetected" style="cursor:default;">
+                <div class="chip">
                     <span class="status-dot pulse"></span>
                     <span>Undetected</span>
                 </div>
-
-                <button class="theme-toggle" aria-label="Toggle Theme"></button>
-                <div id="nav-auth-slot"></div>
-                <button class="burger" aria-label="Toggle Menu">
-                    <span></span><span></span><span></span>
-                </button>
+                <a href="login.html" class="btn btn-ghost btn-sm">Войти</a>
             </div>
         </div>
     </header>
 
     <!-- Hero Section -->
     <section id="hero" class="hero-section">
-        <div class="hero-glow"></div>
         <div class="container hero-content">
-            <div class="hero-pill fade-up">
-                <div id="hero-status-badge" class="status-badge undetected">
-                    <span class="status-dot pulse"></span>
-                    <span>Undetected</span>
+            <div class="fade-up" style="display:inline-block;margin-bottom:1rem;">
+                <div class="chip">
+                    <span>Company Rust · Devblog 266</span>
                 </div>
-                <span style="font-size:0.85rem;font-family:var(--font-mono);color:var(--muted-light);">Rust Devblog 266 · Kernel Driver</span>
             </div>
 
             <h1 class="hero-title fade-up">
-                Silence External <span class="accent-gradient">266</span>
+                Точный контроль.<br>
+                <span class="accent-text">Ничего лишнего.</span>
             </h1>
 
             <p class="hero-desc fade-up">
-                Приватный external-комплекс для серверов Rust Devblog 266. Чтение памяти через kernel-mode драйвер, DirectX 11 оверлей с нулевым инпут-лагом и расчет баллистики.
+                Приватный комплекс режима ядра для Rust Devblog 266. Прямой доступ к памяти через низкоуровневый драйвер, аппаратный оверлей DirectX 11 и выверенная баллистика.
             </p>
 
             <div class="hero-cta fade-up">
                 <a href="#access" class="btn btn-primary btn-lg">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
                     <span>Получить доступ</span>
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
                 </a>
-                <a href="#changelog" class="btn btn-secondary btn-lg">
-                    <span>Открыть Devlog</span>
+                <a href="#features" class="btn btn-ghost btn-lg">
+                    <span>Спецификация</span>
                 </a>
             </div>
+        </div>
+    </section>
 
-            <div class="hero-stats fade-up">
-                <div class="stat-item">
-                    <div class="stat-val font-mono">0.0 ms</div>
-                    <div class="stat-lbl">Input Lag</div>
+    <!-- Stats Strip (Large Clean Numbers) -->
+    <div id="metrics" class="container">
+        <div class="stats-strip fade-up">
+            <div class="stat-item">
+                <div class="stat-val" data-target="0.0" data-decimals="1" data-suffix="ms">0.0ms</div>
+                <div class="stat-lbl">Инпут-лаг оверлея</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-val" data-target="266" data-suffix="">266</div>
+                <div class="stat-lbl">Билд Devblog</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-val" data-target="100" data-suffix="%">100%</div>
+                <div class="stat-lbl">Kernel Mode RPM</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-val" data-target="144" data-suffix="fps">144fps</div>
+                <div class="stat-lbl">DirectX Рендер</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Features Section (Pure 3x2 Grid, Minimal Dividers, NO Boxes) -->
+    <section id="features" class="section">
+        <div class="container">
+            <div style="text-align:center;max-width:620px;margin:0 auto 4rem auto;" class="fade-up">
+                <span class="chip" style="margin-bottom:1rem;">Архитектура</span>
+                <h2>Инженерная основа</h2>
+                <p style="margin-top:0.75rem;font-size:1.05rem;">Каждый модуль спроектирован для максимального быстродействия и чистоты отображения.</p>
+            </div>
+
+            <div class="features-grid-pure fade-up grid-focus-group">
+                <div class="feature-cell">
+                    <span class="feature-num">01 / VISUALS</span>
+                    <h3>Скелетный ESP</h3>
+                    <p>Анатомически точный 2D/3D скелет игроков, расстояние до цели, индикатор активного предмета в руках и состояние сна.</p>
                 </div>
-                <div class="stat-item">
-                    <div class="stat-val font-mono">Devblog 266</div>
-                    <div class="stat-lbl">Company Rust</div>
+
+                <div class="feature-cell">
+                    <span class="feature-num">02 / COMBAT</span>
+                    <h3>Aimbot & Prediction</h3>
+                    <p>Плавный расчет упреждения по скорости перемещения цели и дистанции с учетом гравитации пуль классического 266 девблога.</p>
                 </div>
-                <div class="stat-item">
-                    <div class="stat-val font-mono">Kernel Driver</div>
-                    <div class="stat-lbl">Architecture</div>
+
+                <div class="feature-cell">
+                    <span class="feature-num">03 / WEAPONS</span>
+                    <h3>No Recoil & Sway</h3>
+                    <p>Абсолютная компенсация отдачи оружия и процедурного покачивания прицела без прямого изменения защищенного сегмента памяти игры.</p>
                 </div>
-                <div class="stat-item">
-                    <div class="stat-val font-mono">DirectX 11</div>
-                    <div class="stat-lbl">ImGui Overlay</div>
+
+                <div class="feature-cell">
+                    <span class="feature-num">04 / WORLD</span>
+                    <h3>World & Ore Radar</h3>
+                    <p>Подсветка серных, металлических и каменных жил, контейнеров с лутом, шкафов авторизации и позиций патрульного вертолета.</p>
+                </div>
+
+                <div class="feature-cell">
+                    <span class="feature-num">05 / DISPLAY</span>
+                    <h3>DirectX 11 Оверлей</h3>
+                    <p>Аппаратная отрисовка поверх окна игры в Borderless и Fullscreen Windowed режимах с независимым фреймрейтом.</p>
+                </div>
+
+                <div class="feature-cell">
+                    <span class="feature-num">06 / SECURITY</span>
+                    <h3>Kernel Driver</h3>
+                    <p>Собственный драйвер режима ядра. Полное отсутствие открытых дескрипторов (handles) к процессу игры в пространстве пользователя.</p>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Changelog / Devlog Section -->
+    <!-- Changelog Feed (Strict Cards) -->
     <section id="changelog" class="section">
         <div class="container">
-            <div class="section-header fade-up">
-                <span class="section-subtitle">Changelog & Updates</span>
-                <h2>Инженерный Девблог</h2>
-                <p class="section-desc">Хронология коммитов ядра, оптимизаций рендеринга и изменений в системе обхода античита.</p>
+            <div style="text-align:center;max-width:600px;margin:0 auto 3.5rem auto;" class="fade-up">
+                <span class="chip" style="margin-bottom:1rem;">Журнал разработки</span>
+                <h2>Обновления ядра</h2>
             </div>
 
-            <div class="changelog-controls fade-up">
-                <div class="filter-tags">
-                    <button class="filter-btn active" data-tag="all">Все</button>
-                    <button class="filter-btn" data-tag="feature">Features</button>
-                    <button class="filter-btn" data-tag="security">Security</button>
-                    <button class="filter-btn" data-tag="fix">Fixes</button>
-                    <button class="filter-btn" data-tag="ui">Interface</button>
-                </div>
-                <input type="text" id="posts-search" class="form-input search-input" placeholder="Поиск по обновлениям...">
-            </div>
-
-            <div id="posts-feed" class="posts-feed">
-                <!-- Injected via public.js -->
-            </div>
-
-            <div style="text-align:center;margin-top:2.5rem;">
-                <button id="posts-load-more" class="btn btn-secondary" style="display:none;">Загрузить еще</button>
-            </div>
-        </div>
-    </section>
-
-    <!-- Features Section -->
-    <section id="features" class="section" style="background: rgba(18, 18, 26, 0.4);">
-        <div class="container">
-            <div class="section-header fade-up">
-                <span class="section-subtitle">Functional Stack</span>
-                <h2>Архитектурный функционал</h2>
-                <p class="section-desc">Высокоточная синхронизация структур Unity и безопасное взаимодействие с DirectX пайплайном.</p>
-            </div>
-
-            <div id="features-grid" class="features-grid">
+            <div id="posts-feed" class="devlog-list">
                 <!-- Injected via public.js -->
             </div>
         </div>
     </section>
 
-    <!-- Status / Detection Section -->
-    <section id="status" class="section">
-        <div class="container">
-            <div class="section-header fade-up">
-                <span class="section-subtitle">Live State</span>
-                <h2>Статус клиента</h2>
-                <p class="section-desc">Мониторинг совместимости драйвера с версией Devblog 266 (Company Rust).</p>
-            </div>
-
-            <div class="status-container fade-up">
-                <div class="status-box" id="detection-status-display">
-                    <!-- Injected via public.js -->
-                </div>
-
-                <div class="status-timeline">
-                    <div class="timeline-item">
-                        <div class="timeline-dot"></div>
-                        <div class="timeline-date">Сегодня</div>
-                        <div class="timeline-title">Driver IOCTL Handshake Active</div>
-                        <div class="timeline-desc">Связь юзермод-оверлея с драйвером ядра работает стабильно без сбоев.</div>
-                    </div>
-                    <div class="timeline-item">
-                        <div class="timeline-dot"></div>
-                        <div class="timeline-date">Вчера</div>
-                        <div class="timeline-title">Memory RPM Sync</div>
-                        <div class="timeline-desc">Чтение BaseNetworkable и списка игроков под билд 266 синхронизировано.</div>
-                    </div>
-                    <div class="timeline-item">
-                        <div class="timeline-dot"></div>
-                        <div class="timeline-date">3 дня назад</div>
-                        <div class="timeline-title">Company Rust 266 Build Ready</div>
-                        <div class="timeline-desc">Оффсеты и структуры проверены на клиенте Company Rust.</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Roadmap Section -->
-    <section id="roadmap" class="section" style="background: rgba(18, 18, 26, 0.4);">
-        <div class="container">
-            <div class="section-header fade-up">
-                <span class="section-subtitle">Development Vector</span>
-                <h2>План обновлений</h2>
-                <p class="section-desc">Запланированные модули и статус текущей разработки ядра.</p>
-            </div>
-
-            <div id="roadmap-timeline" class="roadmap-timeline">
-                <!-- Injected via public.js -->
-            </div>
-        </div>
-    </section>
-
-    <!-- Media / Preview Gallery -->
-    <section id="media" class="section">
-        <div class="container">
-            <div class="section-header fade-up">
-                <span class="section-subtitle">Visual Engine Preview</span>
-                <h2>Скриншоты и демонстрация</h2>
-                <p class="section-desc">Рендеринг ESP, интерфейса настроек и предикшена в реальном матче.</p>
-            </div>
-
-            <div class="media-grid fade-up">
-                <div class="media-card" data-src="https://images.unsplash.com/photo-1542751371-adc38448a05e?q=80&w=1200&auto=format&fit=crop">
-                    <img src="https://images.unsplash.com/photo-1542751371-adc38448a05e?q=80&w=600&auto=format&fit=crop" alt="ESP & Radar" />
-                    <div class="media-overlay">Скелетный ESP и Радар</div>
-                </div>
-                <div class="media-card" data-src="https://images.unsplash.com/photo-1550745165-9bc0b252726f?q=80&w=1200&auto=format&fit=crop">
-                    <img src="https://images.unsplash.com/photo-1550745165-9bc0b252726f?q=80&w=600&auto=format&fit=crop" alt="Menu Overlay" />
-                    <div class="media-overlay">Настройки оверлея ImGui</div>
-                </div>
-                <div class="media-card" data-src="https://images.unsplash.com/photo-1511512578047-dfb367046420?q=80&w=1200&auto=format&fit=crop">
-                    <img src="https://images.unsplash.com/photo-1511512578047-dfb367046420?q=80&w=600&auto=format&fit=crop" alt="Prediction" />
-                    <div class="media-overlay">Баллистический расчет пули</div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- FAQ Section -->
-    <section id="faq" class="section" style="background: rgba(18, 18, 26, 0.4);">
-        <div class="container" style="max-width: 800px;">
-            <div class="section-header fade-up">
-                <span class="section-subtitle">Knowledge Base</span>
-                <h2>Часто задаваемые вопросы</h2>
-                <p class="section-desc">Технические детали, совместимость ОС и правила использования.</p>
-            </div>
-
-            <div id="faq-accordion">
-                <!-- Injected via public.js -->
-            </div>
-        </div>
-    </section>
-
-    <!-- Access & Download Section -->
+    <!-- CTA Access Section -->
     <section id="access" class="section">
         <div class="container">
-            <div class="section-header fade-up">
-                <span class="section-subtitle">Binary Distribution</span>
-                <h2>Получение сборки</h2>
-                <p class="section-desc">Пакет содержит лоадер, защищенный драйвер и пресеты конфигураций.</p>
-            </div>
-
-            <div id="access-container">
-                <!-- Injected via public.js depending on auth session -->
+            <div class="cta-box fade-up">
+                <span class="chip" style="margin-bottom:1.5rem;">Приватный доступ</span>
+                <h2>Готовы начать?</h2>
+                <p style="max-width:480px;margin:1rem auto 2.5rem auto;">
+                    Зарегистрируйтесь в системе разработчиков для получения доступа к актуальной сборке софта и закрытым инструкциям.
+                </p>
+                <div style="display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;">
+                    <a href="register.html" class="btn btn-primary btn-lg">Зарегистрироваться</a>
+                    <a href="login.html" class="btn btn-ghost btn-lg">Войти в кабинет</a>
+                </div>
             </div>
         </div>
     </section>
 
-    <!-- Footer -->
+    <!-- Minimal Footer -->
     <footer class="footer">
-        <div class="container">
-            <div class="footer-top">
-                <div>
-                    <div class="nav-brand" style="margin-bottom:0.75rem;">
-                        <div class="nav-brand-logo">S</div>
-                        <span>Silence Dev</span>
-                    </div>
-                    <p style="color:var(--muted);font-size:0.85rem;max-width:320px;">
-                        Приватные исследования архитектур игровых движков и систем низкоуровневой защиты памяти.
-                    </p>
-                </div>
-
-                <div class="footer-links">
-                    <a href="https://discord.gg/silence-external" class="footer-link link-discord" target="_blank" rel="noopener">Discord</a>
-                    <a href="https://t.me/silence_dev" class="footer-link link-telegram" target="_blank" rel="noopener">Telegram</a>
-                    <a href="https://github.com/flishka/Silence" class="footer-link" target="_blank" rel="noopener">GitHub</a>
-                    <a href="login.html" class="footer-link">Авторизация</a>
-                </div>
+        <div class="container footer-content">
+            <div style="display:flex;align-items:center;gap:0.75rem;">
+                <div class="nav-brand-mark">S</div>
+                <span style="font-size:0.9rem;color:var(--text-secondary);">Silence External · 2026</span>
             </div>
 
-            <div class="footer-disclaimer">
-                Внимание: Данный проект создан исключительно в исследовательских целях для изучения взаимодействия драйверов режима ядра с процессами клиента Rust Devblog 266 (Company Rust) и отрисовки оверлеев DirectX. Все права принадлежат их правообладателям.<br>
-                Build: Silence v266 · 2026 SilenceDev Team. Hosted on GitHub Pages.
+            <div class="footer-links">
+                <a href="https://github.com/flishka/SilenceSite" class="footer-link" target="_blank" rel="noopener">GitHub</a>
+                <a href="login.html" class="footer-link">Кабинет</a>
+                <a href="register.html" class="footer-link">Регистрация</a>
             </div>
         </div>
     </footer>
 
-    <!-- Modules -->
+    <!-- Scripts -->
     <script type="module" src="js/ui.js"></script>
     <script type="module" src="js/supabase.js"></script>
     <script type="module" src="js/auth.js"></script>
     <script type="module" src="js/public.js"></script>
 </body>
 </html>
-

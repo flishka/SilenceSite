@@ -1,103 +1,175 @@
 /* ==============================================================================
-   Silence External 266 · Base Canvas with Glass Ambient Orbs
+   Silence External 266 · Base Canvas & Ambient Atmosphere
    ============================================================================== */
 
-body {
+*, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html {
     background-color: var(--bg);
-    color: var(--text);
+    color: var(--text-primary);
     font-family: var(--font-sans);
     font-size: 16px;
     line-height: 1.6;
-    background-image: 
-        radial-gradient(at 10% 20%, rgba(139, 92, 246, 0.15) 0px, transparent 50%),
-        radial-gradient(at 90% 15%, rgba(6, 182, 212, 0.12) 0px, transparent 45%),
-        radial-gradient(at 50% 80%, rgba(124, 58, 237, 0.1) 0px, transparent 60%);
-    background-attachment: fixed;
-    transition: background-color var(--transition-smooth), color var(--transition-smooth);
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
     overflow-x: hidden;
-    position: relative;
 }
 
-/* Ambient glow backdrop */
-body::before {
-    content: '';
+body {
+    background-color: var(--bg);
+    min-height: 100vh;
+    position: relative;
+    overflow-x: hidden;
+}
+
+/* Background Ambient Orbs (Slow 35-50s floating) */
+.ambient-orb {
+    position: fixed;
+    border-radius: 50%;
+    filter: blur(140px);
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.18;
+    will-change: transform;
+}
+
+.orb-1 {
+    top: -10%;
+    left: 20%;
+    width: 650px;
+    height: 650px;
+    background: radial-gradient(circle, #38bdf8 0%, rgba(56, 189, 248, 0) 70%);
+    animation: floatOrb1 40s infinite alternate cubic-bezier(0.45, 0, 0.55, 1);
+}
+
+.orb-2 {
+    bottom: 10%;
+    right: 15%;
+    width: 750px;
+    height: 750px;
+    background: radial-gradient(circle, #7dd3fc 0%, rgba(125, 211, 252, 0) 70%);
+    opacity: 0.12;
+    animation: floatOrb2 48s infinite alternate cubic-bezier(0.45, 0, 0.55, 1);
+}
+
+@keyframes floatOrb1 {
+    0% { transform: translate(0, 0) scale(1); }
+    50% { transform: translate(120px, 80px) scale(1.15); }
+    100% { transform: translate(-80px, 140px) scale(0.9); }
+}
+
+@keyframes floatOrb2 {
+    0% { transform: translate(0, 0) scale(1); }
+    50% { transform: translate(-100px, -90px) scale(1.1); }
+    100% { transform: translate(90px, -60px) scale(0.95); }
+}
+
+/* Interactive Canvas for constellation mesh and particles */
+#ambient-canvas {
     position: fixed;
     top: 0;
     left: 0;
     width: 100vw;
     height: 100vh;
-    background: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.025'/%3E%3C/svg%3E");
     pointer-events: none;
-    z-index: 999;
+    z-index: 1;
 }
 
-h1, h2, h3, h4, h5, h6 {
-    font-family: var(--font-heading);
-    color: var(--text-heading);
-    line-height: 1.15;
-    letter-spacing: -0.03em;
+/* Subtle Cursor Spotlight */
+.cursor-spotlight {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 500px;
+    height: 500px;
+    margin-left: -250px;
+    margin-top: -250px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(125, 211, 252, 0.08) 0%, transparent 65%);
+    pointer-events: none;
+    z-index: 2;
+    opacity: 0;
+    transition: opacity 0.5s ease;
 }
 
-h1 { font-size: clamp(2.6rem, 5.5vw, 4.4rem); font-weight: 800; }
-h2 { font-size: clamp(1.9rem, 3.8vw, 2.7rem); font-weight: 700; }
-h3 { font-size: clamp(1.35rem, 2.6vw, 1.85rem); font-weight: 600; }
-
-code, pre, .font-mono {
-    font-family: var(--font-mono);
+/* Film Grain Overlay */
+.noise-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.02'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 99;
 }
 
+/* Rare subtle shooting light beam across screen */
+.light-beam {
+    position: fixed;
+    top: 0;
+    left: -100%;
+    width: 200%;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(125, 211, 252, 0.25), transparent);
+    transform: rotate(-25deg);
+    pointer-events: none;
+    z-index: 1;
+    animation: beamSweep 14s infinite ease-in-out;
+}
+@keyframes beamSweep {
+    0%, 80% { transform: translateY(-50vh) rotate(-25deg); opacity: 0; }
+    85% { opacity: 0.8; }
+    92% { transform: translateY(120vh) rotate(-25deg); opacity: 0; }
+    100% { opacity: 0; }
+}
+
+/* Typography & Layout */
 .container {
     width: 100%;
     max-width: var(--container-max);
     margin: 0 auto;
-    padding: 0 1.75rem;
+    padding: 0 2rem;
+    position: relative;
+    z-index: 10;
 }
 
 .section {
-    padding: 7rem 0;
+    padding: 8rem 0;
     position: relative;
+    z-index: 10;
 }
 
-.section-header {
-    text-align: center;
-    max-width: 680px;
-    margin: 0 auto 4rem auto;
-}
-
-.section-subtitle {
-    color: var(--accent-2);
-    font-family: var(--font-mono);
-    font-size: 0.8rem;
+h1, h2, h3, h4 {
+    color: var(--text-primary);
     font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.2em;
-    margin-bottom: 0.75rem;
-    display: inline-block;
-    padding: 0.25rem 0.8rem;
-    background: rgba(6, 182, 212, 0.1);
-    border: 1px solid rgba(6, 182, 212, 0.2);
-    border-radius: 20px;
-    backdrop-filter: blur(10px);
+    letter-spacing: -0.035em;
+    line-height: 1.1;
 }
 
-.section-desc {
-    color: var(--muted-light);
-    margin-top: 1rem;
-    font-size: 1.05rem;
+h1 { font-size: clamp(3rem, 6.5vw, 5.5rem); }
+h2 { font-size: clamp(2rem, 4vw, 3.2rem); }
+h3 { font-size: clamp(1.25rem, 2.5vw, 1.75rem); }
+
+p {
+    color: var(--text-secondary);
 }
 
-/* Glass Scrollbar */
+/* Minimal Custom Scrollbar */
 ::-webkit-scrollbar {
-    width: 7px;
-    height: 7px;
+    width: 6px;
 }
 ::-webkit-scrollbar-track {
-    background: var(--bg);
+    background: #000000;
 }
 ::-webkit-scrollbar-thumb {
-    background: rgba(255, 255, 255, 0.15);
-    border-radius: 10px;
-    backdrop-filter: blur(8px);
+    background: #1f2937;
+    border-radius: 4px;
 }
 ::-webkit-scrollbar-thumb:hover {
     background: var(--accent);
