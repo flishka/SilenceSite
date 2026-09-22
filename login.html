@@ -66,37 +66,67 @@
     <script type="module">
         import { auth } from './js/auth.js';
         import { ui } from './js/ui.js';
-
-        // Redirect if already logged in
-        auth.getCurrentUser().then(current => {
-            if (current) window.location.href = 'me.html';
-        });
+        import { getSupabase } from './js/supabase.js';
 
         const form = document.getElementById('login-form');
         const submitBtn = document.getElementById('login-submit-btn');
         const generalError = document.getElementById('general-error');
+        const usernameInput = document.getElementById('login-username');
+        const passwordInput = document.getElementById('login-password');
+
+        // Check if already logged in: do NOT blindly redirect, just inform
+        auth.getCurrentUser().then(current => {
+            if (current && (current.profile || current.user)) {
+                const name = (current.profile && current.profile.username) || current.user.user_metadata?.username || 'user';
+                generalError.style.color = '#7dd3fc';
+                generalError.innerHTML = `Вы уже авторизованы как <strong>@${name}</strong>. <a href="#" id="inline-logout" style="text-decoration:underline;color:#fca5a5;margin-left:8px;">Сменить аккаунт</a>`;
+                generalError.classList.add('visible');
+                
+                document.getElementById('inline-logout')?.addEventListener('click', async (e) => {
+                    e.preventDefault();
+                    await auth.logout();
+                });
+            }
+        });
 
         form.addEventListener('submit', async (e) => {
             e.preventDefault();
+            generalError.textContent = '';
+            generalError.style.color = '#f87171';
             generalError.classList.remove('visible');
-            submitBtn.disabled = true;
-            submitBtn.innerHTML = 'Проверка...';
 
-            const username = document.getElementById('login-username').value;
-            const password = document.getElementById('login-password').value;
+            const username = usernameInput.value.trim();
+            const password = passwordInput.value;
             const rememberMe = document.getElementById('login-remember').checked;
 
-            try {
-                const { profile } = await auth.login({ usernameOrEmail: username, password, rememberMe });
-                ui.toast('Успешный вход!', 'success');
-                if (profile && profile.role === 'ADMIN') {
-                    window.location.href = 'admin.html';
-                } else {
-                    window.location.href = 'me.html';
-                }
-            } catch (err) {
-                generalError.textContent = err.message || 'Ошибка авторизации';
+            if (!username || !password) {
+                generalError.textContent = 'Заполните все поля.';
                 generalError.classList.add('visible');
+                return;
+            }
+
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = 'Проверка учетных данных...';
+
+            try {
+                // Clear any lingering session before new login
+                const sb = getSupabase();
+                if (sb) {
+                    try { await sb.auth.signOut(); } catch (_) {}
+                }
+
+                const { user, profile } = await auth.login({ usernameOrEmail: username, password, rememberMe });
+                
+                ui.toast('Успешный вход!', 'success');
+                setTimeout(() => {
+                    window.location.href = 'index.html';
+                }, 300);
+            } catch (err) {
+                console.warn('Login failure:', err);
+                generalError.textContent = err.message || 'Неверный логин или пароль.';
+                generalError.classList.add('visible');
+                passwordInput.value = '';
+                passwordInput.focus();
             } finally {
                 submitBtn.disabled = false;
                 submitBtn.innerHTML = 'Войти в аккаунт';

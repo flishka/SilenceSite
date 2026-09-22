@@ -34,7 +34,7 @@ export const ui = {
                     obs.unobserve(entry.target);
                 }
             });
-        }, { threshold: 0.1 });
+        }, { threshold: 0.05, rootMargin: '0px 0px -20px 0px' });
 
         document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
     },

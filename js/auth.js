@@ -149,21 +149,25 @@ export const auth = {
         if (!navAuthSlot) return;
 
         const current = await this.getCurrentUser();
-        if (current && current.profile) {
-            const isAdmin = current.profile.role === 'ADMIN';
+        if (current && (current.profile || current.user)) {
+            const username = (current.profile && current.profile.username) 
+                || (current.user.user_metadata && current.user.user_metadata.username) 
+                || 'user';
+            const isAdmin = current.profile && current.profile.role === 'ADMIN';
+
             navAuthSlot.innerHTML = `
-                <div style="display:flex; align-items:center; gap:0.75rem;">
-                    ${isAdmin ? `<a href="admin.html" class="chip" style="color:var(--accent-light);border-color:var(--accent);">Админ-панель</a>` : ''}
-                    <a href="me.html" class="btn btn-ghost btn-sm" style="color:#ffffff;">
-                        ${current.profile.username}
-                    </a>
-                    <button id="nav-logout-btn" class="btn btn-ghost btn-sm" style="color:var(--text-secondary);">
+                <div class="nav-user-container">
+                    ${isAdmin ? `<a href="admin.html" class="nav-admin-badge" title="Панель администратора">Админ</a>` : ''}
+                    <span class="nav-username">@${username}</span>
+                    <button id="nav-logout-btn" class="nav-logout-btn" type="button" title="Выйти из учетной записи">
                         Выйти
                     </button>
                 </div>
             `;
-            document.getElementById('nav-logout-btn')?.addEventListener('click', () => {
-                this.logout();
+
+            document.getElementById('nav-logout-btn')?.addEventListener('click', async (e) => {
+                e.preventDefault();
+                await this.logout();
             });
         } else {
             navAuthSlot.innerHTML = `

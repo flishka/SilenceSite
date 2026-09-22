@@ -153,52 +153,97 @@
 }
 
 /* FORCED DARK INPUTS (Prevents any white browser styling) */
-.form-input, input[type="text"], input[type="password"], input[type="email"] {
+.form-input, 
+input[type="text"], 
+input[type="password"], 
+input[type="email"] {
     width: 100%;
     padding: 0.95rem 1.25rem;
     border-radius: var(--radius-btn);
-    background: #0d0e12 !important;
     background-color: #0d0e12 !important;
-    border: 1px solid rgba(255, 255, 255, 0.12) !important;
-    color: #ffffff !important;
-    -webkit-text-fill-color: #ffffff !important;
+    background: #0d0e12 !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    color: #f2f2f4 !important;
+    -webkit-text-fill-color: #f2f2f4 !important;
     font-size: 0.95rem;
+    font-family: inherit;
     transition: var(--transition);
     outline: none !important;
+    box-sizing: border-box;
 }
 
-.form-input:focus, input[type="text"]:focus, input[type="password"]:focus {
+/* DARK MUTED PLACEHOLDER (Never looks like entered text) */
+.form-input::placeholder,
+input[type="text"]::placeholder,
+input[type="password"]::placeholder,
+input[type="email"]::placeholder {
+    color: #52525b !important;
+    -webkit-text-fill-color: #52525b !important;
+    opacity: 1 !important;
+    font-weight: 400 !important;
+}
+
+.form-input::-webkit-input-placeholder,
+input[type="text"]::-webkit-input-placeholder,
+input[type="password"]::-webkit-input-placeholder,
+input[type="email"]::-webkit-input-placeholder {
+    color: #52525b !important;
+    -webkit-text-fill-color: #52525b !important;
+    opacity: 1 !important;
+    font-weight: 400 !important;
+}
+
+.form-input::-moz-placeholder,
+input[type="text"]::-moz-placeholder,
+input[type="password"]::-moz-placeholder,
+input[type="email"]::-moz-placeholder {
+    color: #52525b !important;
+    opacity: 1 !important;
+    font-weight: 400 !important;
+}
+
+.form-input:focus, 
+input[type="text"]:focus, 
+input[type="password"]:focus,
+input[type="email"]:focus {
     border-color: #38bdf8 !important;
-    background: #121318 !important;
-    background-color: #121318 !important;
-    box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.2), 0 0 25px rgba(56, 189, 248, 0.15) !important;
+    background-color: #111318 !important;
+    background: #111318 !important;
+    box-shadow: 0 0 0 2px rgba(56, 189, 248, 0.2), 0 0 25px rgba(56, 189, 248, 0.12) !important;
+    color: #f2f2f4 !important;
+    -webkit-text-fill-color: #f2f2f4 !important;
 }
 
 /* Chrome/Edge Autocomplete styling fix */
 input:-webkit-autofill,
 input:-webkit-autofill:hover, 
-input:-webkit-autofill:focus {
-    -webkit-text-fill-color: #ffffff !important;
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+    -webkit-text-fill-color: #f2f2f4 !important;
     -webkit-box-shadow: 0 0 0px 1000px #0d0e12 inset !important;
+    box-shadow: 0 0 0px 1000px #0d0e12 inset !important;
+    caret-color: #f2f2f4 !important;
     transition: background-color 5000s ease-in-out 0s;
 }
 
 .form-error {
     font-size: 0.82rem;
     color: #f87171;
-    margin-top: 0.25rem;
+    margin-top: 0.35rem;
     display: none;
 }
 .form-error.visible {
     display: block;
 }
 
-/* Smooth Fade-in */
+/* Smooth Fade-in & Cascade Entry */
 .fade-up {
     opacity: 0;
-    transform: translateY(35px);
-    filter: blur(4px);
-    transition: opacity 0.8s var(--ease-smooth), transform 0.8s var(--ease-smooth), filter 0.8s var(--ease-smooth);
+    transform: translateY(30px);
+    filter: blur(6px);
+    transition: opacity 0.85s cubic-bezier(0.22, 1, 0.36, 1),
+                transform 0.85s cubic-bezier(0.22, 1, 0.36, 1),
+                filter 0.85s cubic-bezier(0.22, 1, 0.36, 1);
     will-change: opacity, transform, filter;
 }
 
@@ -206,4 +251,88 @@ input:-webkit-autofill:focus {
     opacity: 1;
     transform: translateY(0);
     filter: blur(0);
+}
+
+/* Stagger Delays for Grid Children */
+.features-grid-pure .feature-cell:nth-child(1) { transition-delay: 40ms; }
+.features-grid-pure .feature-cell:nth-child(2) { transition-delay: 80ms; }
+.features-grid-pure .feature-cell:nth-child(3) { transition-delay: 120ms; }
+.features-grid-pure .feature-cell:nth-child(4) { transition-delay: 160ms; }
+.features-grid-pure .feature-cell:nth-child(5) { transition-delay: 200ms; }
+.features-grid-pure .feature-cell:nth-child(6) { transition-delay: 240ms; }
+
+/* Cascading Words Animation */
+.cascade-word {
+    display: inline-block;
+    opacity: 0;
+    transform: translateY(32px);
+    filter: blur(8px);
+    animation: wordCascade 0.9s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+@keyframes wordCascade {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+        filter: blur(0);
+    }
+}
+
+/* Navbar Logged-in User Pill */
+.nav-user-container {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.65rem;
+    padding: 4px 6px 4px 12px;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: var(--radius-btn);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+}
+
+.nav-username {
+    font-family: var(--font-mono);
+    font-size: 0.88rem;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.nav-admin-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 3px 8px;
+    border-radius: 6px;
+    background: rgba(125, 211, 252, 0.12);
+    border: 1px solid rgba(125, 211, 252, 0.3);
+    color: var(--accent-light);
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: var(--transition);
+}
+
+.nav-admin-badge:hover {
+    background: rgba(125, 211, 252, 0.22);
+    border-color: var(--accent);
+}
+
+.nav-logout-btn {
+    display: inline-flex;
+    align-items: center;
+    padding: 5px 12px;
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    color: var(--text-secondary);
+    font-size: 0.82rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.nav-logout-btn:hover {
+    background: rgba(239, 68, 68, 0.15);
+    border-color: rgba(239, 68, 68, 0.4);
+    color: #fca5a5;
 }

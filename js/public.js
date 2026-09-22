@@ -105,64 +105,62 @@ export const publicPage = {
         const loadMoreBtn = document.getElementById('posts-load-more');
         if (!feed) return;
 
-        if (reset) {
-            this.postOffset = 0;
-            this.allLoaded = false;
-            feed.innerHTML = '<div style="text-align:center;padding:2rem;color:var(--muted);">Загрузка постов...</div>';
-        }
+        try {
+            const posts = await db.getPosts({
+                tag: this.currentTag,
+                search: this.searchQuery,
+                limit: this.postsLimit,
+                offset: this.postOffset
+            });
 
-        const posts = await db.getPosts({
-            tag: this.currentTag,
-            search: this.searchQuery,
-            limit: this.postsLimit,
-            offset: this.postOffset
-        });
+            if (!posts || posts.length === 0) {
+                if (this.searchQuery) {
+                    feed.innerHTML = '<div style="text-align:center;padding:3rem;color:var(--text-muted);">Посты по вашему запросу не найдены.</div>';
+                }
+                if (loadMoreBtn) loadMoreBtn.style.display = 'none';
+                return;
+            }
 
-        if (reset) {
-            feed.innerHTML = '';
-        }
+            if (reset) {
+                feed.innerHTML = '';
+            }
 
-        if (posts.length === 0 && this.postOffset === 0) {
-            feed.innerHTML = '<div style="text-align:center;padding:3rem;color:var(--muted);">Посты не найдены.</div>';
-            if (loadMoreBtn) loadMoreBtn.style.display = 'none';
-            return;
-        }
+            const html = posts.map(post => {
+                const previewText = post.body.replace(/[#*`>-]/g, '').slice(0, 160) + '...';
+                const parsedContent = parseMarkdown(post.body);
+                const tagsHtml = (post.tags || []).map(t => `<span class="badge badge-accent">${t}</span>`).join(' ');
 
-        const html = posts.map(post => {
-            const previewText = post.body.replace(/[#*`>-]/g, '').slice(0, 160) + '...';
-            const parsedContent = parseMarkdown(post.body);
-            const tagsHtml = (post.tags || []).map(t => `<span class="badge badge-accent">${t}</span>`).join(' ');
-
-            return `
-                <article class="post-card fade-up" data-id="${post.id}">
-                    <div class="post-header">
-                        <div class="post-meta">
-                            <span class="badge font-mono">${post.version}</span>
-                            <span style="font-size:0.85rem;color:var(--muted);">${new Date(post.published_at).toLocaleDateString('ru-RU')}</span>
-                            ${tagsHtml}
+                return `
+                    <article class="post-card fade-up in-view" data-id="${post.id}">
+                        <div class="post-header">
+                            <div class="post-meta">
+                                <span class="badge font-mono" style="background:rgba(125,211,252,0.12);color:var(--accent-light);border:1px solid rgba(125,211,252,0.3);padding:4px 10px;border-radius:6px;">${post.version}</span>
+                                <span class="post-date">${new Date(post.published_at).toLocaleDateString('ru-RU')}</span>
+                            </div>
+                            <div class="post-tags">
+                                ${tagsHtml}
+                            </div>
                         </div>
-                    </div>
-                    <h3 class="post-title">${post.title}</h3>
-                    <p class="post-preview">${previewText}</p>
-                    <div class="post-body" id="post-body-${post.id}">
-                        ${post.cover_url ? `<img src="${post.cover_url}" style="border-radius:var(--radius-sm);margin-bottom:1rem;" alt="Cover" />` : ''}
-                        ${parsedContent}
-                    </div>
-                    <button class="btn btn-secondary btn-sm toggle-post-btn" style="margin-top:1rem;" data-target="post-body-${post.id}">
-                        Читать полностью
-                    </button>
-                </article>
-            `;
-        }).join('');
+                        <h3 class="post-title">${post.title}</h3>
+                        <div class="post-body">
+                            ${parsedContent}
+                        </div>
+                    </article>
+                `;
+            }).join('');
 
-        feed.insertAdjacentHTML('beforeend', html);
-        this.postOffset += posts.length;
+            feed.insertAdjacentHTML('beforeend', html);
+            this.postOffset += posts.length;
 
-        if (posts.length < this.postsLimit) {
-            this.allLoaded = true;
-            if (loadMoreBtn) loadMoreBtn.style.display = 'none';
-        } else {
-            if (loadMoreBtn) loadMoreBtn.style.display = 'inline-flex';
+            if (posts.length < this.postsLimit) {
+                this.allLoaded = true;
+                if (loadMoreBtn) loadMoreBtn.style.display = 'none';
+            } else {
+                if (loadMoreBtn) loadMoreBtn.style.display = 'inline-flex';
+            }
+        } catch (err) {
+            console.warn('Posts load error:', err);
+            // Leave static content on error
         }
     },
 
@@ -171,24 +169,27 @@ export const publicPage = {
         const container = document.getElementById('roadmap-timeline');
         if (!container) return;
 
-        const items = await db.getRoadmap();
-        if (!items || items.length === 0) return;
+        try {
+            const items = await db.getRoadmap();
+            if (!items || items.length === 0) return;
 
-        container.innerHTML = items.map(item => {
-            const stateLabel = item.state === 'done' ? 'Completed' : item.state === 'in_progress' ? 'In Progress' : 'Planned';
-            return `
-                <div class="roadmap-item ${item.state} fade-up">
-                    <div class="roadmap-node"></div>
-                    <div class="card">
-                        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:0.5rem;">
-                            <span class="badge ${item.state === 'done' ? 'badge-accent' : 'badge-cyan'}">${stateLabel}</span>
+            container.innerHTML = items.map(item => {
+                const stateClass = item.state === 'done' ? 'done' : item.state === 'in_progress' ? 'in-progress' : 'planned';
+                const stateLabel = item.state === 'done' ? 'Выполнено' : item.state === 'in_progress' ? 'В разработке' : 'Запланировано';
+                return `
+                    <div class="roadmap-card fade-up in-view">
+                        <div class="roadmap-status ${stateClass}">
+                            ${item.state === 'in_progress' ? '<span class="status-dot pulse"></span>' : item.state === 'done' ? '<span class="status-dot"></span>' : ''}
+                            <span>${stateLabel}</span>
                         </div>
                         <h3>${item.title}</h3>
-                        <p style="color:var(--muted-light);font-size:0.95rem;margin-top:0.4rem;">${item.description}</p>
+                        <p style="color:var(--text-secondary);font-size:0.92rem;line-height:1.6;margin-top:0.5rem;">${item.description}</p>
                     </div>
-                </div>
-            `;
-        }).join('');
+                `;
+            }).join('');
+        } catch (err) {
+            console.warn('Roadmap load error:', err);
+        }
     },
 
     // 5. FAQ Accordion
@@ -196,20 +197,24 @@ export const publicPage = {
         const container = document.getElementById('faq-accordion');
         if (!container) return;
 
-        const faqs = await db.getFAQ();
-        if (!faqs || faqs.length === 0) return;
+        try {
+            const faqs = await db.getFAQ();
+            if (!faqs || faqs.length === 0) return;
 
-        container.innerHTML = faqs.map((faq, idx) => `
-            <div class="accordion-item ${idx === 0 ? 'active' : ''} fade-up">
-                <div class="accordion-header">
-                    <span>${faq.question}</span>
-                    <span class="accordion-icon">+</span>
+            container.innerHTML = faqs.map((faq, idx) => `
+                <div class="accordion-item ${idx === 0 ? 'active' : ''} fade-up in-view">
+                    <div class="accordion-header">
+                        <span>${faq.question}</span>
+                        <span class="accordion-icon">+</span>
+                    </div>
+                    <div class="accordion-content">
+                        <p>${faq.answer}</p>
+                    </div>
                 </div>
-                <div class="accordion-content">
-                    <p>${faq.answer}</p>
-                </div>
-            </div>
-        `).join('');
+            `).join('');
+        } catch (err) {
+            console.warn('FAQ load error:', err);
+        }
     },
 
     // 6. Access / Download Section
@@ -323,6 +328,21 @@ export const publicPage = {
             const isOpen = bodyEl.classList.contains('open');
             bodyEl.classList.toggle('open', !isOpen);
             btn.textContent = isOpen ? 'Читать полностью' : 'Свернуть';
+        });
+
+        // FAQ Accordion click handler
+        document.addEventListener('click', (e) => {
+            const header = e.target.closest('.accordion-header');
+            if (!header) return;
+
+            const item = header.closest('.accordion-item');
+            if (!item) return;
+
+            const wasActive = item.classList.contains('active');
+            document.querySelectorAll('.accordion-item').forEach(el => el.classList.remove('active'));
+            if (!wasActive) {
+                item.classList.add('active');
+            }
         });
     }
 };

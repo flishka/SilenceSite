@@ -67,15 +67,16 @@
             </div>
 
             <h1 class="hero-title fade-up">
-                Точный контроль.<br>
-                <span class="accent-text">Ничего лишнего.</span>
+                <span class="cascade-word" style="animation-delay: 100ms;">Точный</span>
+                <span class="cascade-word" style="animation-delay: 200ms;">контроль.</span><br>
+                <span class="cascade-word accent-text" style="animation-delay: 350ms;">Ничего лишнего.</span>
             </h1>
 
-            <p class="hero-desc fade-up">
+            <p class="hero-desc fade-up" style="transition-delay: 200ms;">
                 Приватный комплекс режима ядра для Rust Devblog 266. Прямой доступ к памяти через низкоуровневый драйвер, аппаратный оверлей DirectX 11 и выверенная баллистика.
             </p>
 
-            <div class="hero-cta fade-up">
+            <div class="hero-cta fade-up" style="transition-delay: 300ms;">
                 <a href="#access" class="btn btn-primary btn-lg">
                     <span>Получить доступ</span>
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
@@ -164,11 +165,74 @@
             <div style="text-align:center;max-width:600px;margin:0 auto 3.5rem auto;" class="fade-up">
                 <span class="chip" style="margin-bottom:1rem;">Журнал разработки</span>
                 <h2>Обновления ядра</h2>
-                <p style="margin-top:0.75rem;">Хронология релизов и улучшений клиента.</p>
+                <p style="margin-top:0.75rem;">Хронология релизов и улучшений клиента Silence External.</p>
             </div>
 
             <div id="posts-feed" class="devlog-list">
-                <!-- Injected via public.js -->
+                <article class="post-card fade-up">
+                    <div class="post-header">
+                        <div class="post-meta">
+                            <span class="badge font-mono" style="background:rgba(125,211,252,0.12);color:var(--accent-light);border:1px solid rgba(125,211,252,0.3);padding:4px 10px;border-radius:6px;">v2.66.4</span>
+                            <span class="post-date">2026-09-20</span>
+                        </div>
+                        <div class="post-tags">
+                            <span class="badge" style="background:rgba(255,255,255,0.04);border:1px solid var(--border);padding:3px 8px;border-radius:4px;font-size:0.75rem;color:var(--text-secondary);">Kernel</span>
+                            <span class="badge" style="background:rgba(255,255,255,0.04);border:1px solid var(--border);padding:3px 8px;border-radius:4px;font-size:0.75rem;color:var(--text-secondary);">Overlay</span>
+                        </div>
+                    </div>
+                    <h3 class="post-title">Оптимизация DirectX 11 оверлея и фикс размытия</h3>
+                    <div class="post-body">
+                        <p>Выпущено минорное обновление клиента под свежий протокол 266 девблога Company Rust:</p>
+                        <ul>
+                            <li>Переработан цикл рендера DirectX 11 — снижение инпут-лага до стабильных 0.0–0.2 мс.</li>
+                            <li>Исправлено наложение скелетного ESP при переключении между оконным и полноэкранным режимами.</li>
+                            <li>Внедрена дополнительная обфускация коммуникационного канала IOCTL драйвера.</li>
+                        </ul>
+                    </div>
+                </article>
+
+                <article class="post-card fade-up">
+                    <div class="post-header">
+                        <div class="post-meta">
+                            <span class="badge font-mono" style="background:rgba(125,211,252,0.12);color:var(--accent-light);border:1px solid rgba(125,211,252,0.3);padding:4px 10px;border-radius:6px;">v2.66.3</span>
+                            <span class="post-date">2026-09-12</span>
+                        </div>
+                        <div class="post-tags">
+                            <span class="badge" style="background:rgba(255,255,255,0.04);border:1px solid var(--border);padding:3px 8px;border-radius:4px;font-size:0.75rem;color:var(--text-secondary);">Aimbot</span>
+                            <span class="badge" style="background:rgba(255,255,255,0.04);border:1px solid var(--border);padding:3px 8px;border-radius:4px;font-size:0.75rem;color:var(--text-secondary);">Ballistics</span>
+                        </div>
+                    </div>
+                    <h3 class="post-title">Калибровка баллистического упреждения</h3>
+                    <div class="post-body">
+                        <p>Интегрирована новая таблица скоростей пуль для автоматического оружия и охотничьих луков:</p>
+                        <ul>
+                            <li>Упреждение по скорости цели теперь рассчитывается с учетом сетевого интерполяционного тикрейта сервера.</li>
+                            <li>Добавлена фильтрация спящих игроков из приоритетного захвата Aimbot.</li>
+                            <li>Полное подавление отдачи (No Recoil) без модификации кода памяти игры.</li>
+                        </ul>
+                    </div>
+                </article>
+
+                <article class="post-card fade-up">
+                    <div class="post-header">
+                        <div class="post-meta">
+                            <span class="badge font-mono" style="background:rgba(125,211,252,0.12);color:var(--accent-light);border:1px solid rgba(125,211,252,0.3);padding:4px 10px;border-radius:6px;">v2.66.1</span>
+                            <span class="post-date">2026-09-01</span>
+                        </div>
+                        <div class="post-tags">
+                            <span class="badge" style="background:rgba(255,255,255,0.04);border:1px solid var(--border);padding:3px 8px;border-radius:4px;font-size:0.75rem;color:var(--text-secondary);">Driver</span>
+                            <span class="badge" style="background:rgba(255,255,255,0.04);border:1px solid var(--border);padding:3px 8px;border-radius:4px;font-size:0.75rem;color:var(--text-secondary);">Core</span>
+                        </div>
+                    </div>
+                    <h3 class="post-title">Базовый релиз ядра Silence External 266</h3>
+                    <div class="post-body">
+                        <p>Первый стабильный билд архитектуры с внешним чтением через системный драйвер режима ядра:</p>
+                        <ul>
+                            <li>Нулевое присутствие дескрипторов процесса игры в пользовательском пространстве.</li>
+                            <li>Защита от захвата экрана стриминговыми сервисами (OBS Studio / Discord / GeForce Experience).</li>
+                        </ul>
+                    </div>
+                </article>
             </div>
         </div>
     </section>
@@ -179,11 +243,51 @@
             <div style="text-align:center;max-width:600px;margin:0 auto 3.5rem auto;" class="fade-up">
                 <span class="chip" style="margin-bottom:1rem;">Планы</span>
                 <h2>Вектор разработки</h2>
-                <p style="margin-top:0.75rem;">Запланированные и завершенные этапы архитектуры.</p>
+                <p style="margin-top:0.75rem;">Запланированные и завершенные этапы архитектуры Silence.</p>
             </div>
 
-            <div id="roadmap-timeline" class="devlog-list">
-                <!-- Injected via public.js -->
+            <div id="roadmap-timeline" class="roadmap-grid">
+                <div class="roadmap-card fade-up">
+                    <div class="roadmap-status done">
+                        <span class="status-dot"></span>
+                        <span>Фаза 01 · Выполнено</span>
+                    </div>
+                    <h3>Kernel Mode RPM & DirectX 11</h3>
+                    <p style="color:var(--text-secondary);font-size:0.92rem;line-height:1.6;margin-top:0.5rem;">
+                        Низкоуровневый драйвер ядра для скрытого чтения памяти без открытых дескрипторов. Аппаратный оверлей с нулевым инпут-лагом.
+                    </p>
+                </div>
+
+                <div class="roadmap-card fade-up">
+                    <div class="roadmap-status in-progress">
+                        <span class="status-dot pulse"></span>
+                        <span>Фаза 02 · В разработке</span>
+                    </div>
+                    <h3>Баллистика и Silent Aim</h3>
+                    <p style="color:var(--text-secondary);font-size:0.92rem;line-height:1.6;margin-top:0.5rem;">
+                        Калибровка полета пуль классического 266 девблога, векторная компенсация рассинхронизации и поддержка оружия ближнего боя.
+                    </p>
+                </div>
+
+                <div class="roadmap-card fade-up">
+                    <div class="roadmap-status planned">
+                        <span>Фаза 03 · Запланировано</span>
+                    </div>
+                    <h3>Мировой радар и добыча</h3>
+                    <p style="color:var(--text-secondary);font-size:0.92rem;line-height:1.6;margin-top:0.5rem;">
+                        Расширенная фильтрация лута, серные и металлические жилы, шкафы с индикацией оставшегося времени содержания и аирдропы.
+                    </p>
+                </div>
+
+                <div class="roadmap-card fade-up">
+                    <div class="roadmap-status planned">
+                        <span>Фаза 04 · Запланировано</span>
+                    </div>
+                    <h3>Облачные пресеты конфигов</h3>
+                    <p style="color:var(--text-secondary);font-size:0.92rem;line-height:1.6;margin-top:0.5rem;">
+                        Мгновенная загрузка пользовательских настроек цветов ESP и баллистических профилей через защищенный API без локальных файлов.
+                    </p>
+                </div>
             </div>
         </div>
     </section>
@@ -194,11 +298,59 @@
             <div style="text-align:center;max-width:600px;margin:0 auto 3.5rem auto;" class="fade-up">
                 <span class="chip" style="margin-bottom:1rem;">FAQ</span>
                 <h2>Вопросы и ответы</h2>
-                <p style="margin-top:0.75rem;">Техническая информация по совместимости и запуску.</p>
+                <p style="margin-top:0.75rem;">Техническая информация по совместимости, настройке и запуску.</p>
             </div>
 
-            <div id="faq-accordion">
-                <!-- Injected via public.js -->
+            <div id="faq-accordion" class="faq-list">
+                <div class="accordion-item active fade-up">
+                    <div class="accordion-header">
+                        <span>На каких версиях Windows работает Silence 266?</span>
+                        <span class="accordion-icon">+</span>
+                    </div>
+                    <div class="accordion-content">
+                        <p>Комплекс полностью протестирован и стабильно функционирует на 64-битных операционных системах Windows 10 (сборки 1903–22H2) и Windows 11 (21H2–23H2). Поддерживаются процессоры как Intel, так и AMD с активной виртуализацией VT-x / AMD-V.</p>
+                    </div>
+                </div>
+
+                <div class="accordion-item fade-up">
+                    <div class="accordion-header">
+                        <span>Требуется ли режим тестирования (Test Signing Mode)?</span>
+                        <span class="accordion-icon">+</span>
+                    </div>
+                    <div class="accordion-content">
+                        <p>Нет. Драйвер загружается в штатном режиме без включения тестового режима Windows и без отключения проверки цифровой подписи (DSE). Ваша операционная система остается в стандартной безопасной конфигурации.</p>
+                    </div>
+                </div>
+
+                <div class="accordion-item fade-up">
+                    <div class="accordion-header">
+                        <span>Влияет ли внешний оверлей на FPS в игре?</span>
+                        <span class="accordion-icon">+</span>
+                    </div>
+                    <div class="accordion-content">
+                        <p>Оверлей функционирует в полностью изолированном независимом потоке через DirectX 11 с аппаратным ускорением видеокарты. Задержка кадра оверлея составляет 0.0–0.2 мс, что исключает любое проседание частоты кадров самой игры.</p>
+                    </div>
+                </div>
+
+                <div class="accordion-item fade-up">
+                    <div class="accordion-header">
+                        <span>Скрыт ли оверлей от программ захвата экрана?</span>
+                        <span class="accordion-icon">+</span>
+                    </div>
+                    <div class="accordion-content">
+                        <p>Да. В окне оверлея реализована защита от захвата (Window Display Affinity), предотвращающая отображение ESP и визуальных элементов при записи через OBS Studio, Discord, Telegram и ShadowPlay.</p>
+                    </div>
+                </div>
+
+                <div class="accordion-item fade-up">
+                    <div class="accordion-header">
+                        <span>Будут ли ломаться оффсеты при серверных вайпах?</span>
+                        <span class="accordion-icon">+</span>
+                    </div>
+                    <div class="accordion-content">
+                        <p>Клиент Devblog 266 (Company Rust) является фиксированным неизменным билдом. Смещения структур памяти (offsets) зафиксированы раз и навсегда и не требуют регулярных ручных обновлений со стороны пользователя.</p>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
@@ -207,14 +359,22 @@
     <section id="access" class="section">
         <div class="container">
             <div class="cta-box fade-up">
-                <span class="chip" style="margin-bottom:1.5rem;">Приватный доступ</span>
-                <h2>Готовы начать?</h2>
-                <p style="max-width:480px;margin:1rem auto 2.5rem auto;">
-                    Зарегистрируйтесь в системе разработчиков для получения доступа к актуальной сборке софта и закрытым инструкциям.
+                <span class="chip" style="margin-bottom:1.5rem;">Приватный релиз</span>
+                <h2>Доступ к сборке</h2>
+                <p style="max-width:540px;margin:1rem auto 1.5rem auto;line-height:1.7;">
+                    Авторизуйтесь в системе разработчиков для получения доступа к актуальному клиенту, документации ядра и обновлениям.
                 </p>
-                <div style="display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;">
+
+                <div class="checklist">
+                    <div class="checklist-item"><span class="checklist-icon">✔</span> Windows 10 / 11 x64</div>
+                    <div class="checklist-item"><span class="checklist-icon">✔</span> Включенная виртуализация VT-x / AMD-V</div>
+                    <div class="checklist-item"><span class="checklist-icon">✔</span> DirectX 11 совместимость</div>
+                    <div class="checklist-item"><span class="checklist-icon">✔</span> OBS / Stream Proof</div>
+                </div>
+
+                <div style="display:flex;gap:1.2rem;justify-content:center;flex-wrap:wrap;margin-top:2rem;">
                     <a href="register.html" class="btn btn-primary btn-lg">Зарегистрироваться</a>
-                    <a href="login.html" class="btn btn-ghost btn-lg">Войти в кабинет</a>
+                    <a href="login.html" class="btn btn-ghost btn-lg">Войти в аккаунт</a>
                 </div>
             </div>
         </div>

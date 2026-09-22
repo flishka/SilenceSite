@@ -26,7 +26,7 @@
 }
 .auth-card:hover {
     border-color: var(--glass-border-hover);
-    box-shadow: 0 25px 60px rgba(0, 0, 0, 0.6), 0 0 30px rgba(139, 92, 246, 0.25);
+    box-shadow: 0 25px 60px rgba(0, 0, 0, 0.6), 0 0 30px rgba(125, 211, 252, 0.12);
 }
 
 .auth-header {
