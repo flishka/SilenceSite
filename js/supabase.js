@@ -5,7 +5,7 @@
 
 // Production configuration credentials (Public Anon Key safe for GitHub Pages per Supabase design)
 export const SUPABASE_URL = window.ENV_SUPABASE_URL || 'https://yhsboodomnvugtqyhrjg.supabase.co';
-export const SUPABASE_ANON_KEY = window.ENV_SUPABASE_ANON_KEY || 'sb_publishable_A_FcjSRzHMyQTco3TD0rmg_lmQEWv4s';
+export const SUPABASE_ANON_KEY = window.ENV_SUPABASE_ANON_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inloc2Jvb2RvbW52dWd0cXlocmpnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTAwNzU5NTEsImV4cCI6MjEwNTY1MTk1MX0.rf_UohAQKZQ4em6tLiT5YpMNS6MzOETowpWUPOO3EQA';
 
 // Initialize Supabase client
 let supabaseInstance = null;
