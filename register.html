@@ -97,15 +97,18 @@
             submitBtn.innerHTML = 'Создание...';
 
             try {
-                await auth.register({ username, realEmail: null, password, confirmPassword: confirm });
-                ui.toast('Аккаунт успешно создан! Выполняем вход...', 'success');
+                const res = await auth.register({ username, realEmail: null, password, confirmPassword: confirm });
+                ui.toast('Аккаунт успешно создан!', 'success');
                 
-                // Auto login
-                setTimeout(async () => {
+                // If session is already returned by signup
+                if (res && res.session) {
+                    window.location.href = 'me.html';
+                } else {
                     await auth.login({ usernameOrEmail: username, password });
                     window.location.href = 'me.html';
-                }, 1000);
+                }
             } catch (err) {
+                console.error(err);
                 generalError.textContent = err.message || 'Ошибка регистрации';
                 generalError.classList.add('visible');
                 submitBtn.disabled = false;
