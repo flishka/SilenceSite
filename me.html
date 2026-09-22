@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="ru" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Личный кабинет · Silence External 266</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700;800&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="css/reset.css">
+    <link rel="stylesheet" href="css/tokens.css">
+    <link rel="stylesheet" href="css/base.css">
+    <link rel="stylesheet" href="css/components.css">
+    <link rel="stylesheet" href="css/public.css">
+    <link rel="stylesheet" href="css/auth.css">
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+
+    <!-- Simple Topbar -->
+    <header class="navbar scrolled">
+        <div class="container nav-container">
+            <a href="index.html" class="nav-brand">
+                <div class="nav-brand-logo">S</div>
+                <span>Silence <span class="badge font-mono">266</span></span>
+            </a>
+
+            <div class="nav-actions">
+                <button class="theme-toggle" aria-label="Toggle Theme"></button>
+                <button id="logout-btn" class="btn btn-secondary btn-sm">Выйти</button>
+            </div>
+        </div>
+    </header>
+
+    <div class="container" style="padding-top: calc(var(--navbar-height) + 2rem); padding-bottom: 5rem;">
+        <div class="profile-grid">
+            
+            <!-- Left Column: User Card -->
+            <aside class="profile-sidebar fade-up in-view">
+                <img id="user-avatar" class="profile-avatar" src="" alt="Avatar" />
+                <h2 id="user-username" class="profile-name">...</h2>
+                <div id="user-role-badge" class="profile-role-badge"></div>
+
+                <div class="profile-info-list font-mono">
+                    <div>
+                        <span style="color:var(--muted);">UID:</span>
+                        <span id="user-id-short" style="color:var(--text);font-size:0.8rem;">...</span>
+                    </div>
+                    <div>
+                        <span style="color:var(--muted);">Создан:</span>
+                        <span id="user-created" style="color:var(--text);font-size:0.8rem;">...</span>
+                    </div>
+                    <div>
+                        <span style="color:var(--muted);">Вход:</span>
+                        <span id="user-last-login" style="color:var(--text);font-size:0.8rem;">...</span>
+                    </div>
+                </div>
+
+                <div style="margin-top:1.5rem;" id="admin-panel-link-slot"></div>
+            </aside>
+
+            <!-- Right Column: License, Download & Settings -->
+            <main class="profile-main-content">
+                
+                <!-- Download Card -->
+                <div class="card fade-up in-view">
+                    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem;">
+                        <span class="badge badge-accent">Лицензия активна</span>
+                        <span class="status-badge undetected" style="padding:0.2rem 0.6rem;font-size:0.75rem;">
+                            <span class="status-dot pulse"></span>
+                            Undetected
+                        </span>
+                    </div>
+
+                    <h3>Сборка Silence External 266</h3>
+                    <p style="color:var(--muted-light);margin-top:0.4rem;font-size:0.95rem;">
+                        Клиент включает драйвер EPT гипервизора, DirectX 11 ImGui оверлей и автоматическую компенсацию отдачи.
+                    </p>
+
+                    <div class="checklist" style="margin: 1.5rem 0;">
+                        <div class="checklist-item"><span class="checklist-icon">✔</span> Архитектура: Windows 10/11 x64</div>
+                        <div class="checklist-item"><span class="checklist-icon">✔</span> Привязка HWID: Автоматически при первом запуске</div>
+                        <div class="checklist-item"><span class="checklist-icon">✔</span> EAC Cerberus bypass v266</div>
+                        <div class="checklist-item"><span class="checklist-icon">✔</span> Stream-proof (OBS/Discord скрыт)</div>
+                    </div>
+
+                    <div style="display:flex;gap:1rem;flex-wrap:wrap;">
+                        <a id="btn-download-app" href="#" class="btn btn-primary" target="_blank" rel="noopener">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                            <span>Скачать лаунчер (.zip)</span>
+                        </a>
+                        <a href="index.html#changelog" class="btn btn-secondary">Смотреть чейнджлог</a>
+                    </div>
+                </div>
+
+                <!-- Account Settings -->
+                <div class="card fade-up in-view">
+                    <h3>Настройки профиля</h3>
+                    <form id="profile-form" style="margin-top:1.5rem;">
+                        <div class="form-group">
+                            <label class="form-label">Email для уведомлений</label>
+                            <input type="email" id="profile-email-input" class="form-input" placeholder="your@email.com">
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">URL Аватарки</label>
+                            <input type="url" id="profile-avatar-input" class="form-input" placeholder="https://...">
+                        </div>
+
+                        <button type="submit" class="btn btn-secondary">Сохранить изменения</button>
+                    </form>
+                </div>
+
+            </main>
+        </div>
+    </div>
+
+    <script type="module">
+        import { auth } from './js/auth.js';
+        import { getSupabase, db } from './js/supabase.js';
+        import { ui } from './js/ui.js';
+
+        // Guard: redirect to login if no active user session
+        const current = await auth.guard({ requireAuth: true });
+        if (!current) throw new Error('Unauthenticated');
+
+        const { user, profile } = current;
+
+        // Populate fields
+        document.getElementById('user-avatar').src = profile.avatar_url || `https://api.dicebear.com/7.x/bottts/svg?seed=${profile.username}`;
+        document.getElementById('user-username').textContent = profile.username;
+        document.getElementById('user-id-short').textContent = user.id.slice(0, 8) + '...';
+        document.getElementById('user-created').textContent = new Date(profile.created_at).toLocaleDateString('ru-RU');
+        document.getElementById('user-last-login').textContent = profile.last_login_at ? new Date(profile.last_login_at).toLocaleTimeString('ru-RU') : 'Первый вход';
+        
+        document.getElementById('user-role-badge').innerHTML = `
+            <span class="badge ${profile.role === 'ADMIN' ? 'badge-accent' : ''}">${profile.role}</span>
+        `;
+
+        if (profile.role === 'ADMIN') {
+            document.getElementById('admin-panel-link-slot').innerHTML = `
+                <a href="admin.html" class="btn btn-primary btn-sm" style="width:100%;">
+                    <span>Панель Администратора</span>
+                </a>
+            `;
+        }
+
+        // Preload settings for download link
+        const settings = await db.getSettings();
+        if (settings.download_url) {
+            document.getElementById('btn-download-app').href = settings.download_url;
+        }
+
+        document.getElementById('profile-email-input').value = profile.email || '';
+        document.getElementById('profile-avatar-input').value = profile.avatar_url || '';
+
+        // Form submit
+        document.getElementById('profile-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const sb = getSupabase();
+            const email = document.getElementById('profile-email-input').value.trim();
+            const avatar = document.getElementById('profile-avatar-input').value.trim();
+
+            const { error } = await sb
+                .from('profiles')
+                .update({ email, avatar_url: avatar || profile.avatar_url })
+                .eq('id', user.id);
+
+            if (error) {
+                ui.toast('Ошибка сохранения: ' + error.message, 'error');
+            } else {
+                ui.toast('Профиль обновлен!', 'success');
+                if (avatar) document.getElementById('user-avatar').src = avatar;
+            }
+        });
+
+        // Logout
+        document.getElementById('logout-btn').addEventListener('click', () => auth.logout());
+    </script>
+</body>
+</html>
+

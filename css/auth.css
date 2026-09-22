@@ -1,0 +1,149 @@
+/* ==============================================================================
+   Silence External 266 · Auth & User Profile Styles
+   ============================================================================== */
+
+.auth-wrapper {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem 1rem;
+    position: relative;
+}
+
+.auth-card {
+    width: 100%;
+    max-width: 440px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 2.5rem;
+    box-shadow: var(--shadow);
+    position: relative;
+    z-index: 10;
+}
+
+.auth-header {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+.auth-header h1 {
+    font-size: 1.8rem;
+    margin-top: 0.5rem;
+}
+.auth-header p {
+    color: var(--muted-light);
+    font-size: 0.9rem;
+    margin-top: 0.3rem;
+}
+
+/* Password Strength Meter */
+.strength-meter {
+    height: 4px;
+    width: 100%;
+    background: var(--surface-3);
+    border-radius: 2px;
+    margin-top: 0.4rem;
+    overflow: hidden;
+    position: relative;
+}
+.strength-bar {
+    height: 100%;
+    width: 0%;
+    transition: width 0.3s ease, background-color 0.3s ease;
+}
+.strength-bar.weak { width: 33%; background: #EF4444; }
+.strength-bar.medium { width: 66%; background: #F59E0B; }
+.strength-bar.strong { width: 100%; background: #10B981; }
+
+.strength-label {
+    font-size: 0.75rem;
+    color: var(--muted);
+    margin-top: 0.2rem;
+    display: block;
+    text-align: right;
+}
+
+/* Checkbox */
+.checkbox-label {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    font-size: 0.85rem;
+    color: var(--muted-light);
+    cursor: pointer;
+    user-select: none;
+}
+.checkbox-label input[type="checkbox"] {
+    width: 16px;
+    height: 16px;
+    accent-color: var(--accent);
+    cursor: pointer;
+}
+
+.auth-footer-links {
+    margin-top: 1.5rem;
+    text-align: center;
+    font-size: 0.85rem;
+    color: var(--muted-light);
+}
+.auth-footer-links a {
+    color: var(--accent);
+    font-weight: 600;
+}
+.auth-footer-links a:hover {
+    text-decoration: underline;
+}
+
+/* User Cabinet (me.html) */
+.profile-grid {
+    display: grid;
+    grid-template-columns: 320px 1fr;
+    gap: 2rem;
+    margin-top: 2rem;
+}
+.profile-sidebar {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 2rem;
+    text-align: center;
+}
+.profile-avatar {
+    width: 96px;
+    height: 96px;
+    border-radius: 50%;
+    margin: 0 auto 1rem auto;
+    border: 3px solid var(--accent);
+    box-shadow: 0 0 20px var(--accent-glow);
+    background: var(--surface-2);
+}
+.profile-name {
+    font-size: 1.3rem;
+    font-weight: 700;
+}
+.profile-role-badge {
+    margin-top: 0.5rem;
+}
+.profile-info-list {
+    margin-top: 1.5rem;
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    font-size: 0.9rem;
+    border-top: 1px solid var(--border);
+    padding-top: 1.25rem;
+}
+.profile-main-content {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+@media (max-width: 768px) {
+    .profile-grid {
+        grid-template-columns: 1fr;
+    }
+}
+

@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="ru" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Панель управления · Silence External 266</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700;800&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="css/reset.css">
+    <link rel="stylesheet" href="css/tokens.css">
+    <link rel="stylesheet" href="css/base.css">
+    <link rel="stylesheet" href="css/components.css">
+    <link rel="stylesheet" href="css/admin.css">
+
+    <!-- Libraries via CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+
+    <div class="admin-layout">
+        <!-- Sidebar -->
+        <aside class="admin-sidebar">
+            <div class="admin-brand">
+                <div class="nav-brand-logo" style="width:28px;height:28px;font-size:0.9rem;">S</div>
+                <strong style="font-size:1.1rem;font-family:var(--font-heading);">Silence Admin</strong>
+            </div>
+
+            <nav class="admin-nav">
+                <div class="admin-nav-item active" data-tab="dashboard">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+                    <span>Dashboard</span>
+                </div>
+                <div class="admin-nav-item" data-tab="users">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                    <span>Пользователи</span>
+                </div>
+                <div class="admin-nav-item" data-tab="posts">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+                    <span>Посты / Devlog</span>
+                </div>
+                <div class="admin-nav-item" data-tab="status">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                    <span>Статус чита</span>
+                </div>
+                <div class="admin-nav-item" data-tab="roadmap">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="2" x2="12" y2="22"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+                    <span>Roadmap</span>
+                </div>
+                <div class="admin-nav-item" data-tab="faq">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+                    <span>FAQ</span>
+                </div>
+                <div class="admin-nav-item" data-tab="features">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                    <span>Фичи</span>
+                </div>
+                <div class="admin-nav-item" data-tab="audit">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="4 17 10 11 4 5"/><line x1="12" y1="19" x2="20" y2="19"/></svg>
+                    <span>Audit Log</span>
+                </div>
+                <div class="admin-nav-item" data-tab="settings">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+                    <span>Настройки</span>
+                </div>
+            </nav>
+
+            <div style="padding-top:1rem;border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;">
+                <a href="index.html" class="btn btn-sm btn-secondary">&larr; Сайт</a>
+                <button class="theme-toggle" aria-label="Theme"></button>
+            </div>
+        </aside>
+
+        <!-- Main Workspace -->
+        <main class="admin-main">
+            <header class="admin-header">
+                <div>
+                    <h1 style="font-size:1.8rem;">Управление проектом</h1>
+                    <span style="font-size:0.85rem;color:var(--muted);">Silence External 266 Control Center</span>
+                </div>
+                <div id="admin-user-info" style="display:flex;align-items:center;gap:0.75rem;"></div>
+            </header>
+
+            <!-- TAB 1: DASHBOARD -->
+            <section id="tab-dashboard" class="admin-tab active">
+                <div class="dashboard-grid">
+                    <div class="dashboard-stat-card">
+                        <span class="stat-lbl">Пользователей</span>
+                        <div class="val" id="dash-user-count">0</div>
+                    </div>
+                    <div class="dashboard-stat-card">
+                        <span class="stat-lbl">Постов Devlog</span>
+                        <div class="val" id="dash-post-count">0</div>
+                    </div>
+                    <div class="dashboard-stat-card">
+                        <span class="stat-lbl">Текущий статус</span>
+                        <div class="val" style="color:var(--status-undetected);" id="dash-status-val">Undetected</div>
+                    </div>
+                </div>
+
+                <div class="chart-container">
+                    <h3 style="margin-bottom:1rem;font-size:1.1rem;">Регистрации за 30 дней</h3>
+                    <div style="height:250px;">
+                        <canvas id="regChart"></canvas>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3 style="margin-bottom:1rem;font-size:1.1rem;">Последние события аудита</h3>
+                    <div class="table-container">
+                        <table class="admin-table">
+                            <thead>
+                                <tr><th>Инициатор</th><th>Действие</th><th>Сущность</th><th>Время</th></tr>
+                            </thead>
+                            <tbody id="dash-recent-audit"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- TAB 2: USERS -->
+            <section id="tab-users" class="admin-tab">
+                <div style="display:flex;justify-content:space-between;margin-bottom:1.5rem;gap:1rem;flex-wrap:wrap;">
+                    <input type="text" id="users-search" class="form-input" placeholder="Поиск по логину или email..." style="max-width:320px;">
+                </div>
+                <div class="table-container">
+                    <table class="admin-table">
+                        <thead>
+                            <tr><th>Username</th><th>Email</th><th>Роль</th><th>Статус</th><th>Дата регистрации</th><th>Действия</th></tr>
+                        </thead>
+                        <tbody id="users-table-body"></tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- TAB 3: POSTS -->
+            <section id="tab-posts" class="admin-tab">
+                <div style="display:flex;justify-content:space-between;margin-bottom:1.5rem;align-items:center;">
+                    <h2>Девблог публикации</h2>
+                    <button class="btn btn-primary" onclick="window.adminController.openPostModal()">
+                        <span>+ Создать пост</span>
+                    </button>
+                </div>
+                <div class="table-container">
+                    <table class="admin-table">
+                        <thead>
+                            <tr><th>Заголовок</th><th>Версия</th><th>Теги</th><th>Статус</th><th>Действия</th></tr>
+                        </thead>
+                        <tbody id="posts-table-body"></tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- TAB 4: STATUS -->
+            <section id="tab-status" class="admin-tab">
+                <div class="card" style="max-width:600px;">
+                    <h2 style="margin-bottom:1.5rem;">Состояние софта</h2>
+                    <div class="form-group">
+                        <label class="form-label">Статус чита</label>
+                        <select id="status-val-select" class="form-select">
+                            <option value="Undetected">Undetected (Зеленый)</option>
+                            <option value="Updating">Updating (Желтый)</option>
+                            <option value="Down">Down (Красный)</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Патч игры</label>
+                        <input type="text" id="status-game-input" class="form-input" value="Rust v266">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Версия античита</label>
+                        <input type="text" id="status-ac-input" class="form-input" value="EAC Cerberus">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Комментарий разработчика</label>
+                        <textarea id="status-comment-input" class="form-textarea"></textarea>
+                    </div>
+                    <button class="btn btn-primary" onclick="window.adminController.saveStatus()">Обновить статус</button>
+                </div>
+            </section>
+
+            <!-- TAB 5: ROADMAP -->
+            <section id="tab-roadmap" class="admin-tab">
+                <h2 style="margin-bottom:1.5rem;">План разработки</h2>
+                <div id="roadmap-admin-list"></div>
+            </section>
+
+            <!-- TAB 6: FAQ -->
+            <section id="tab-faq" class="admin-tab">
+                <h2 style="margin-bottom:1.5rem;">База знаний (FAQ)</h2>
+                <div id="faq-admin-list"></div>
+            </section>
+
+            <!-- TAB 7: FEATURES -->
+            <section id="tab-features" class="admin-tab">
+                <h2 style="margin-bottom:1.5rem;">Список возможностей</h2>
+                <div id="features-admin-list"></div>
+            </section>
+
+            <!-- TAB 8: AUDIT LOG -->
+            <section id="tab-audit" class="admin-tab">
+                <h2 style="margin-bottom:1.5rem;">Полный журнал аудита безопасности</h2>
+                <div class="table-container">
+                    <table class="admin-table">
+                        <thead>
+                            <tr><th>Инициатор</th><th>Действие</th><th>Таблица</th><th>Данные</th><th>Время</th></tr>
+                        </thead>
+                        <tbody id="full-audit-table-body"></tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- TAB 9: SETTINGS -->
+            <section id="tab-settings" class="admin-tab">
+                <div class="card" style="max-width:600px;">
+                    <h2 style="margin-bottom:1.5rem;">Глобальные настройки сайта</h2>
+                    <div class="form-group">
+                        <label class="form-label">Версия сборки</label>
+                        <input type="text" id="setting-version" class="form-input">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Ссылка на скачивание лаунчера</label>
+                        <input type="url" id="setting-download-url" class="form-input">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Discord ссылка</label>
+                        <input type="url" id="setting-discord-url" class="form-input">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Telegram ссылка</label>
+                        <input type="url" id="setting-tg-url" class="form-input">
+                    </div>
+                    <button class="btn btn-primary" onclick="window.adminController.saveSettings()">Сохранить параметры</button>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- POST MODAL (CREATE / EDIT) -->
+    <div id="post-modal" class="admin-modal">
+        <div class="admin-modal-box">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1.5rem;">
+                <h3>Редактор публикации</h3>
+                <button class="lightbox-close" style="position:static;font-size:1.5rem;" onclick="document.getElementById('post-modal').classList.remove('active')">&times;</button>
+            </div>
+            
+            <input type="hidden" id="post-id">
+
+            <div class="form-group">
+                <label class="form-label">Заголовок</label>
+                <input type="text" id="post-title" class="form-input" placeholder="Релиз Silence 266">
+            </div>
+
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;">
+                <div class="form-group">
+                    <label class="form-label">Версия чита</label>
+                    <input type="text" id="post-version" class="form-input" value="v266.0">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Теги (через запятую)</label>
+                    <input type="text" id="post-tags" class="form-input" value="feature, security">
+                </div>
+            </div>
+
+            <div class="editor-split">
+                <div class="form-group">
+                    <label class="form-label">Markdown контент</label>
+                    <textarea id="post-body" class="form-textarea" style="height:320px;"></textarea>
+                </div>
+                <div>
+                    <label class="form-label">Превью</label>
+                    <div id="post-preview-panel" class="editor-preview" style="height:320px;"></div>
+                </div>
+            </div>
+
+            <div style="margin: 1.25rem 0;">
+                <label class="checkbox-label">
+                    <input type="checkbox" id="post-published" checked>
+                    <span>Опубликовать сразу</span>
+                </label>
+            </div>
+
+            <div style="display:flex;justify-content:flex-end;gap:1rem;">
+                <button class="btn btn-secondary" onclick="document.getElementById('post-modal').classList.remove('active')">Отмена</button>
+                <button class="btn btn-primary" onclick="window.adminController.savePost()">Сохранить пост</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Initialization Guard & Logic -->
+    <script type="module">
+        import { auth } from './js/auth.js';
+        import { admin } from './js/admin.js';
+
+        // Strict Admin Guard
+        const current = await auth.guard({ requireAuth: true, requireAdmin: true });
+        if (current) {
+            document.getElementById('admin-user-info').innerHTML = `
+                <img src="${current.profile.avatar_url}" style="width:28px;height:28px;border-radius:50%;" alt="" />
+                <span>${current.profile.username}</span>
+            `;
+            admin.init();
+        }
+    </script>
+</body>
+</html>
+

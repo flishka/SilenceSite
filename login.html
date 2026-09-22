@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="ru" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Вход · Silence External 266</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700;800&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="css/reset.css">
+    <link rel="stylesheet" href="css/tokens.css">
+    <link rel="stylesheet" href="css/base.css">
+    <link rel="stylesheet" href="css/components.css">
+    <link rel="stylesheet" href="css/auth.css">
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+
+    <div class="auth-wrapper">
+        <div class="auth-card fade-up in-view">
+            <div class="auth-header">
+                <a href="index.html" style="display:inline-flex;align-items:center;gap:0.5rem;font-family:var(--font-heading);font-weight:700;font-size:1.2rem;">
+                    <span style="background:var(--accent);color:#FFF;padding:4px 8px;border-radius:6px;">S</span>
+                    <span>Silence 266</span>
+                </a>
+                <h1>Вход в систему</h1>
+                <p>Авторизуйтесь для доступа к сборке и конфигурациям</p>
+            </div>
+
+            <form id="login-form">
+                <div class="form-group">
+                    <label class="form-label" for="login-username">Логин или Email</label>
+                    <input type="text" id="login-username" class="form-input" placeholder="Введите username или email" required autocomplete="username">
+                    <div id="error-username" class="form-error"></div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="login-password">Пароль</label>
+                    <input type="password" id="login-password" class="form-input" placeholder="••••••••" required autocomplete="current-password">
+                    <div id="error-password" class="form-error"></div>
+                </div>
+
+                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1.5rem;">
+                    <label class="checkbox-label">
+                        <input type="checkbox" id="login-remember" checked>
+                        <span>Запомнить меня</span>
+                    </label>
+                </div>
+
+                <div id="general-error" class="form-error" style="margin-bottom:1rem;text-align:center;"></div>
+
+                <button type="submit" id="login-submit-btn" class="btn btn-primary" style="width:100%;">
+                    <span>Войти в аккаунт</span>
+                </button>
+            </form>
+
+            <div class="auth-footer-links">
+                Нет учетной записи? <a href="register.html">Зарегистрироваться</a><br>
+                <a href="index.html" style="display:inline-block;margin-top:0.75rem;color:var(--muted);font-weight:normal;">&larr; На главную страницу</a>
+            </div>
+        </div>
+    </div>
+
+    <script type="module">
+        import { auth } from './js/auth.js';
+        import { ui } from './js/ui.js';
+
+        // Redirect if already logged in
+        auth.getCurrentUser().then(current => {
+            if (current) window.location.href = 'me.html';
+        });
+
+        const form = document.getElementById('login-form');
+        const submitBtn = document.getElementById('login-submit-btn');
+        const generalError = document.getElementById('general-error');
+
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            generalError.classList.remove('visible');
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = 'Проверка...';
+
+            const username = document.getElementById('login-username').value;
+            const password = document.getElementById('login-password').value;
+            const rememberMe = document.getElementById('login-remember').checked;
+
+            try {
+                const { profile } = await auth.login({ usernameOrEmail: username, password, rememberMe });
+                ui.toast('Успешный вход!', 'success');
+                if (profile && profile.role === 'ADMIN') {
+                    window.location.href = 'admin.html';
+                } else {
+                    window.location.href = 'me.html';
+                }
+            } catch (err) {
+                generalError.textContent = err.message || 'Ошибка авторизации';
+                generalError.classList.add('visible');
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = 'Войти в аккаунт';
+            }
+        });
+    </script>
+</body>
+</html>
+

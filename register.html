@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="ru" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Регистрация · Silence External 266</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700;800&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="css/reset.css">
+    <link rel="stylesheet" href="css/tokens.css">
+    <link rel="stylesheet" href="css/base.css">
+    <link rel="stylesheet" href="css/components.css">
+    <link rel="stylesheet" href="css/auth.css">
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+
+    <div class="auth-wrapper">
+        <div class="auth-card fade-up in-view">
+            <div class="auth-header">
+                <a href="index.html" style="display:inline-flex;align-items:center;gap:0.5rem;font-family:var(--font-heading);font-weight:700;font-size:1.2rem;">
+                    <span style="background:var(--accent);color:#FFF;padding:4px 8px;border-radius:6px;">S</span>
+                    <span>Silence 266</span>
+                </a>
+                <h1>Создать аккаунт</h1>
+                <p>Регистрация в закрытой системе разработчиков</p>
+            </div>
+
+            <form id="reg-form">
+                <div class="form-group">
+                    <label class="form-label" for="reg-username">Имя пользователя (Логин) *</label>
+                    <input type="text" id="reg-username" class="form-input" placeholder="flqshka" required autocomplete="username">
+                    <div id="error-username" class="form-error"></div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="reg-email">Email (Опционально)</label>
+                    <input type="email" id="reg-email" class="form-input" placeholder="user@example.com" autocomplete="email">
+                    <span style="font-size:0.75rem;color:var(--muted);">Если не указан, создаётся псевдоним @silence.local</span>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="reg-password">Пароль (мин. 8 символов) *</label>
+                    <input type="password" id="reg-password" class="form-input" placeholder="••••••••" required autocomplete="new-password">
+                    
+                    <div class="strength-meter">
+                        <div id="strength-bar" class="strength-bar"></div>
+                    </div>
+                    <span id="strength-label" class="strength-label">Сложность: не введено</span>
+                    <div id="error-password" class="form-error"></div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="reg-confirm">Повторите пароль *</label>
+                    <input type="password" id="reg-confirm" class="form-input" placeholder="••••••••" required autocomplete="new-password">
+                    <div id="error-confirm" class="form-error"></div>
+                </div>
+
+                <div id="general-error" class="form-error" style="margin-bottom:1rem;text-align:center;"></div>
+
+                <button type="submit" id="reg-submit-btn" class="btn btn-primary" style="width:100%;">
+                    <span>Зарегистрироваться</span>
+                </button>
+            </form>
+
+            <div class="auth-footer-links">
+                Уже зарегистрированы? <a href="login.html">Войти в аккаунт</a><br>
+                <a href="index.html" style="display:inline-block;margin-top:0.75rem;color:var(--muted);font-weight:normal;">&larr; На главную</a>
+            </div>
+        </div>
+    </div>
+
+    <script type="module">
+        import { auth } from './js/auth.js';
+        import { ui } from './js/ui.js';
+
+        const form = document.getElementById('reg-form');
+        const passInput = document.getElementById('reg-password');
+        const strBar = document.getElementById('strength-bar');
+        const strLabel = document.getElementById('strength-label');
+        const submitBtn = document.getElementById('reg-submit-btn');
+        const generalError = document.getElementById('general-error');
+
+        // Dynamic password strength evaluate
+        passInput.addEventListener('input', () => {
+            const res = auth.evaluatePassword(passInput.value);
+            strBar.className = 'strength-bar ' + res.class;
+            strLabel.textContent = 'Сложность: ' + res.label;
+        });
+
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            generalError.classList.remove('visible');
+
+            const username = document.getElementById('reg-username').value.trim();
+            const realEmail = document.getElementById('reg-email').value.trim();
+            const password = document.getElementById('reg-password').value;
+            const confirm = document.getElementById('reg-confirm').value;
+
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = 'Создание...';
+
+            try {
+                await auth.register({ username, realEmail, password, confirmPassword: confirm });
+                ui.toast('Аккаунт успешно создан! Выполняем вход...', 'success');
+                
+                // Auto login
+                setTimeout(async () => {
+                    await auth.login({ usernameOrEmail: username, password });
+                    window.location.href = 'me.html';
+                }, 1000);
+            } catch (err) {
+                generalError.textContent = err.message || 'Ошибка регистрации';
+                generalError.classList.add('visible');
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = 'Зарегистрироваться';
+            }
+        });
+    </script>
+</body>
+</html>
+

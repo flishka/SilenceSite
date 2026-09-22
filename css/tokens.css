@@ -1,0 +1,72 @@
+/* ==============================================================================
+   Silence External 266 · Design Tokens & CSS Variables
+   ============================================================================== */
+
+:root {
+    /* Dark Theme (Default) */
+    --bg: #0A0A0F;
+    --surface: #12121A;
+    --surface-2: #1A1A24;
+    --surface-3: #222230;
+    --accent: #7C3AED;
+    --accent-hover: #6D28D9;
+    --accent-glow: rgba(124, 58, 237, 0.45);
+    --accent-2: #00E5FF;
+    --accent-2-glow: rgba(0, 229, 255, 0.4);
+    --text: #E5E7EB;
+    --text-heading: #F9FAFB;
+    --muted: #6B7280;
+    --muted-light: #9CA3AF;
+    --border: rgba(255, 255, 255, 0.08);
+    --border-accent: rgba(124, 58, 237, 0.4);
+    
+    /* Semantic Status Colors */
+    --status-undetected: #10B981;
+    --status-undetected-glow: rgba(16, 185, 129, 0.45);
+    --status-updating: #F59E0B;
+    --status-updating-glow: rgba(245, 158, 11, 0.45);
+    --status-down: #EF4444;
+    --status-down-glow: rgba(239, 68, 68, 0.45);
+
+    /* Geometry & Effects */
+    --radius: 14px;
+    --radius-sm: 10px;
+    --radius-xs: 6px;
+    --shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+    --shadow-card: 0 4px 20px rgba(0, 0, 0, 0.35);
+    --glow: 0 0 40px rgba(124, 58, 237, 0.35);
+    --transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    --transition-slow: all 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+
+    /* Typography */
+    --font-heading: 'Space Grotesk', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    --font-mono: 'JetBrains Mono', monospace;
+
+    /* Layout Constraints */
+    --container-max: 1200px;
+    --navbar-height: 72px;
+}
+
+/* Light Theme Override */
+[data-theme="light"] {
+    --bg: #F3F4F6;
+    --surface: #FFFFFF;
+    --surface-2: #F9FAFB;
+    --surface-3: #E5E7EB;
+    --accent: #6D28D9;
+    --accent-hover: #5B21B6;
+    --accent-glow: rgba(109, 40, 217, 0.25);
+    --accent-2: #0891B2;
+    --accent-2-glow: rgba(8, 145, 178, 0.25);
+    --text: #1F2937;
+    --text-heading: #111827;
+    --muted: #6B7280;
+    --muted-light: #4B5563;
+    --border: rgba(0, 0, 0, 0.1);
+    --border-accent: rgba(109, 40, 217, 0.3);
+    --shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+    --shadow-card: 0 4px 20px rgba(0, 0, 0, 0.06);
+    --glow: 0 0 40px rgba(109, 40, 217, 0.2);
+}
+
