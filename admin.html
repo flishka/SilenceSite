@@ -297,9 +297,10 @@
         // Strict Admin Guard
         const current = await auth.guard({ requireAuth: true, requireAdmin: true });
         if (current) {
+            const avatar = (current.profile && current.profile.avatar_url) || `https://api.dicebear.com/7.x/identicon/svg?seed=${current.profile?.username || 'admin'}`;
             document.getElementById('admin-user-info').innerHTML = `
-                <img src="${current.profile.avatar_url}" style="width:28px;height:28px;border-radius:50%;" alt="" />
-                <span>${current.profile.username}</span>
+                <img src="${avatar}" style="width:28px;height:28px;border-radius:50%;object-fit:cover;" alt="" />
+                <span>${current.profile?.username || 'Admin'}</span>
             `;
             admin.init();
         }
