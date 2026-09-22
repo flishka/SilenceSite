@@ -37,12 +37,6 @@
                 </div>
 
                 <div class="form-group">
-                    <label class="form-label" for="reg-email">Email (Опционально)</label>
-                    <input type="email" id="reg-email" class="form-input" placeholder="user@example.com" autocomplete="email">
-                    <span style="font-size:0.75rem;color:var(--muted);">Если не указан, создаётся псевдоним @silence.local</span>
-                </div>
-
-                <div class="form-group">
                     <label class="form-label" for="reg-password">Пароль (мин. 8 символов) *</label>
                     <input type="password" id="reg-password" class="form-input" placeholder="••••••••" required autocomplete="new-password">
                     
@@ -96,7 +90,6 @@
             generalError.classList.remove('visible');
 
             const username = document.getElementById('reg-username').value.trim();
-            const realEmail = document.getElementById('reg-email').value.trim();
             const password = document.getElementById('reg-password').value;
             const confirm = document.getElementById('reg-confirm').value;
 
@@ -104,7 +97,7 @@
             submitBtn.innerHTML = 'Создание...';
 
             try {
-                await auth.register({ username, realEmail, password, confirmPassword: confirm });
+                await auth.register({ username, realEmail: null, password, confirmPassword: confirm });
                 ui.toast('Аккаунт успешно создан! Выполняем вход...', 'success');
                 
                 // Auto login
