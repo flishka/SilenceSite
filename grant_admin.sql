@@ -13,3 +13,4 @@ on conflict (id) do update set role = 'ADMIN'::user_role;
 -- 3. Разрешить публичное чтение профилей (чтобы ник отображался на сайте без задержек)
 drop policy if exists "Public profiles read" on public.profiles;
 create policy "Public profiles read" on public.profiles for select using (true);
+
