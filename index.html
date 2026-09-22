@@ -50,7 +50,9 @@
                     <span class="status-dot pulse"></span>
                     <span>Undetected</span>
                 </div>
-                <a href="login.html" class="btn btn-ghost btn-sm">Войти</a>
+                <div id="nav-auth-slot">
+                    <a href="login.html" class="btn btn-ghost btn-sm">Войти</a>
+                </div>
             </div>
         </div>
     </header>
@@ -162,9 +164,40 @@
             <div style="text-align:center;max-width:600px;margin:0 auto 3.5rem auto;" class="fade-up">
                 <span class="chip" style="margin-bottom:1rem;">Журнал разработки</span>
                 <h2>Обновления ядра</h2>
+                <p style="margin-top:0.75rem;">Хронология релизов и улучшений клиента.</p>
             </div>
 
             <div id="posts-feed" class="devlog-list">
+                <!-- Injected via public.js -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Roadmap Timeline -->
+    <section id="roadmap" class="section">
+        <div class="container">
+            <div style="text-align:center;max-width:600px;margin:0 auto 3.5rem auto;" class="fade-up">
+                <span class="chip" style="margin-bottom:1rem;">Планы</span>
+                <h2>Вектор разработки</h2>
+                <p style="margin-top:0.75rem;">Запланированные и завершенные этапы архитектуры.</p>
+            </div>
+
+            <div id="roadmap-timeline" class="devlog-list">
+                <!-- Injected via public.js -->
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ Accordion Section -->
+    <section id="faq" class="section">
+        <div class="container" style="max-width: 860px;">
+            <div style="text-align:center;max-width:600px;margin:0 auto 3.5rem auto;" class="fade-up">
+                <span class="chip" style="margin-bottom:1rem;">FAQ</span>
+                <h2>Вопросы и ответы</h2>
+                <p style="margin-top:0.75rem;">Техническая информация по совместимости и запуску.</p>
+            </div>
+
+            <div id="faq-accordion">
                 <!-- Injected via public.js -->
             </div>
         </div>

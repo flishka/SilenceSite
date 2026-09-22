@@ -153,16 +153,21 @@ export const auth = {
             const isAdmin = current.profile.role === 'ADMIN';
             navAuthSlot.innerHTML = `
                 <div style="display:flex; align-items:center; gap:0.75rem;">
-                    ${isAdmin ? `<a href="admin.html" class="badge badge-accent" style="text-decoration:none;">Admin</a>` : ''}
-                    <a href="me.html" class="btn btn-secondary btn-sm" style="display:flex; align-items:center; gap:0.5rem;">
-                        <img src="${current.profile.avatar_url}" style="width:20px;height:20px;border-radius:50%;" alt="" />
-                        <span>${current.profile.username}</span>
+                    ${isAdmin ? `<a href="admin.html" class="chip" style="color:var(--accent-light);border-color:var(--accent);">Админ-панель</a>` : ''}
+                    <a href="me.html" class="btn btn-ghost btn-sm" style="color:#ffffff;">
+                        ${current.profile.username}
                     </a>
+                    <button id="nav-logout-btn" class="btn btn-ghost btn-sm" style="color:var(--text-secondary);">
+                        Выйти
+                    </button>
                 </div>
             `;
+            document.getElementById('nav-logout-btn')?.addEventListener('click', () => {
+                this.logout();
+            });
         } else {
             navAuthSlot.innerHTML = `
-                <a href="login.html" class="btn btn-primary btn-sm">Войти</a>
+                <a href="login.html" class="btn btn-ghost btn-sm">Войти</a>
             `;
         }
     }
