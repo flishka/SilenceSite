@@ -66,3 +66,4 @@ create policy "Enable insert for authenticated users" on public.profiles
 truncate table public.status;
 insert into public.status (value, comment, game_version, ac_version)
 values ('Undetected', 'Kernel Driver активен. Поддержка клиентов Company Rust (Devblog 266).', 'Devblog 266 (Company Rust)', 'No AC / Server-Side');
+
