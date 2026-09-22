@@ -1,6 +1,6 @@
-# Silence External 266 · Engineering Devblog & Distribution Hub
+# Silence External V1.0.0 · Engineering Devblog & Distribution Hub
 
-Технический портал и девблог приватного проекта **Silence External 266** (Rust external cheat).
+Технический портал и девблог приватного проекта **Silence External V1.0.0** (Rust external cheat).
 Стек: Чистый HTML5 + CSS3 + Vanilla ES Modules, Supabase (Postgres, Auth, RLS, Real-time), развертывание на GitHub Pages.
 
 ---

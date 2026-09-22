@@ -1,5 +1,5 @@
-/**
- * Silence External 266 · Supabase Client & Configuration
+﻿/**
+ * Silence External V1.0.0 · Supabase Client & Configuration
  * Architecture: Clean Supabase JS SDK CDN wrapper with anon-key authentication
  */
 
@@ -40,7 +40,7 @@ export const db = {
             .single();
         if (error) {
             console.warn('Could not fetch dynamic status, falling back to cached:', error.message);
-            return { value: 'Undetected', comment: 'Hypervisor active. Zero detections on v266.', game_version: 'v266', ac_version: 'EAC Cerberus', updated_at: new Date().toISOString() };
+            return { value: 'Undetected', comment: 'Kernel driver active. Zero detections on V1.0.0.', game_version: 'Rust V1.0.0', ac_version: 'Kernel Protection', updated_at: new Date().toISOString() };
         }
         return data;
     },
@@ -131,4 +131,5 @@ export const db = {
         return data;
     }
 };
+
 

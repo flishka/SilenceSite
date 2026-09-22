@@ -1,5 +1,5 @@
-/**
- * Silence External 266 · Authentication Module
+﻿/**
+ * Silence External V1.0.0 · Authentication Module
  * Supabase Auth, username -> internal email mapping, session guard, password strength
  */
 
@@ -198,4 +198,5 @@ export const auth = {
 document.addEventListener('DOMContentLoaded', () => {
     auth.updateNavAuthUI();
 });
+
 

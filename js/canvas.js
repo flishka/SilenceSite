@@ -1,5 +1,5 @@
-/**
- * Silence External 266 · Canvas Constellation, Particle Drift & Cursor Spotlight
+﻿/**
+ * Silence External V1.0.0 · Canvas Constellation, Particle Drift & Cursor Spotlight
  * 60 FPS, hardware accelerated, subtle and strictly minimal
  */
 
@@ -111,4 +111,5 @@ export function initCanvasAtmosphere() {
 
     requestAnimationFrame(render);
 }
+
 

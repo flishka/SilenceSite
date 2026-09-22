@@ -3,8 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Silence External · V1.0.0</title>
+    <title>SilenceDev · Silence External V1.0.0</title>
     <meta name="description" content="Строгий приватный комплекс Silence External V1.0.0. Высокопроизводительный драйвер ядра, нулевой инпут-лаг, DirectX 11.">
+    
+    <!-- Open Graph for clean link preview -->
+    <meta property="og:title" content="SilenceDev">
+    <meta property="og:site_name" content="SilenceDev">
+    <meta property="og:description" content="Silence External V1.0.0">
+    <meta name="twitter:title" content="SilenceDev">
 
     <!-- Google Fonts: Inter -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -269,6 +275,26 @@
     </footer>
 
     <!-- Scripts -->
+    <script>
+        // Immediate guaranteed smooth scrolling for all anchor links
+        document.addEventListener('click', function(e) {
+            var anchor = e.target.closest('a[href^="#"]');
+            if (!anchor) return;
+            var targetId = anchor.getAttribute('href');
+            if (!targetId || targetId === '#') return;
+            var targetElement = document.querySelector(targetId);
+            if (targetElement) {
+                e.preventDefault();
+                var headerOffset = 76;
+                var elementPosition = targetElement.getBoundingClientRect().top + window.pageYOffset;
+                var offsetPosition = elementPosition - headerOffset;
+                window.scrollTo({
+                    top: offsetPosition,
+                    behavior: 'smooth'
+                });
+            }
+        });
+    </script>
     <script type="module" src="js/ui.js"></script>
     <script type="module" src="js/supabase.js"></script>
     <script type="module" src="js/auth.js"></script>

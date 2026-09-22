@@ -1,5 +1,5 @@
-/* ==============================================================================
-   Silence External 266 · Frosted Glass & Atmospheric Lighting
+﻿/* ==============================================================================
+   Silence External V1.0.0 · Frosted Glass & Atmospheric Lighting
    ============================================================================== */
 
 *, *::before, *::after {
@@ -160,3 +160,4 @@ p {
 ::-webkit-scrollbar-thumb:hover {
     background: var(--accent);
 }
+

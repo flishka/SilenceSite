@@ -1,5 +1,5 @@
-/**
- * Silence External 266 · Public Page Controller
+﻿/**
+ * Silence External V1.0.0 · Public Page Controller
  * Handles live data loading from Supabase: status, changelog, features, roadmap, faq
  */
 
@@ -223,4 +223,5 @@ export const publicPage = {
 document.addEventListener('DOMContentLoaded', () => {
     publicPage.init();
 });
+
 

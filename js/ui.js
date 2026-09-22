@@ -1,5 +1,5 @@
 /**
- * Silence External 266 · Smooth UI Controller
+ * Silence External V1.0.0 · Smooth UI Controller
  * Scroll effects, count-up animations, magnetic buttons, intersection observer
  */
 
@@ -25,24 +25,24 @@ export const ui = {
             }
         });
 
-        // Smooth scroll for all internal anchor links (#features, #metrics, etc.)
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', (e) => {
-                const href = anchor.getAttribute('href');
-                if (!href || href === '#') return;
-                const targetEl = document.querySelector(href);
-                if (targetEl) {
-                    e.preventDefault();
-                    const navOffset = 76;
-                    const elPos = targetEl.getBoundingClientRect().top + window.pageYOffset;
-                    const offsetPos = elPos - navOffset;
+        // Global event delegation for smooth scrolling on any # anchor link
+        document.addEventListener('click', (e) => {
+            const anchor = e.target.closest('a[href^="#"]');
+            if (!anchor) return;
+            const href = anchor.getAttribute('href');
+            if (!href || href === '#') return;
+            const targetEl = document.querySelector(href);
+            if (targetEl) {
+                e.preventDefault();
+                const navOffset = 76;
+                const elPos = targetEl.getBoundingClientRect().top + window.pageYOffset;
+                const offsetPos = elPos - navOffset;
 
-                    window.scrollTo({
-                        top: offsetPos,
-                        behavior: 'smooth'
-                    });
-                }
-            });
+                window.scrollTo({
+                    top: offsetPos,
+                    behavior: 'smooth'
+                });
+            }
         });
     },
 
@@ -147,6 +147,9 @@ export const ui = {
     }
 };
 
-document.addEventListener('DOMContentLoaded', () => {
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', () => ui.init());
+} else {
     ui.init();
-});
+}
+

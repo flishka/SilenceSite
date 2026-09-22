@@ -1,5 +1,5 @@
-/**
- * Silence External 266 · Admin Panel Controller
+﻿/**
+ * Silence External V1.0.0 · Admin Panel Controller
  * Full CRUD, Dashboard, User moderation, Audit log, Settings
  */
 
@@ -268,7 +268,7 @@ export const admin = {
 
         document.getElementById('post-id').value = post ? post.id : '';
         document.getElementById('post-title').value = post ? post.title : '';
-        document.getElementById('post-version').value = post ? post.version : 'v266';
+        document.getElementById('post-version').value = post ? post.version : 'V1.0.0';
         document.getElementById('post-tags').value = post ? (post.tags || []).join(', ') : 'feature';
         document.getElementById('post-body').value = post ? post.body : '';
         document.getElementById('post-published').checked = post ? post.published : true;
@@ -519,4 +519,5 @@ export const admin = {
 };
 
 window.adminController = admin;
+
 

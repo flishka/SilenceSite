@@ -1,5 +1,5 @@
-/**
- * Silence External 266 · Zero-dependency Markdown Parser
+﻿/**
+ * Silence External V1.0.0 · Zero-dependency Markdown Parser
  * Safe, minimal and fast Markdown -> HTML renderer
  */
 
@@ -99,4 +99,5 @@ export function parseMarkdown(md) {
 
     return src;
 }
+
 
