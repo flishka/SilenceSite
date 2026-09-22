@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Вход · Silence External 266</title>
+    <title>Вход · Silence External V1.0.0</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700;800&display=swap" rel="stylesheet">
@@ -23,7 +23,7 @@
             <div class="auth-header">
                 <a href="index.html" style="display:inline-flex;align-items:center;gap:0.5rem;font-family:var(--font-heading);font-weight:700;font-size:1.2rem;">
                     <span style="background:var(--accent);color:#FFF;padding:4px 8px;border-radius:6px;">S</span>
-                    <span>Silence 266</span>
+                    <span>Silence V1.0.0</span>
                 </a>
                 <h1>Вход в систему</h1>
                 <p>Авторизуйтесь для доступа к сборке и конфигурациям</p>
@@ -43,8 +43,13 @@
                 </div>
 
                 <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1.5rem;">
-                    <label class="checkbox-label">
+                    <label class="custom-checkbox">
                         <input type="checkbox" id="login-remember" checked>
+                        <span class="checkbox-box">
+                            <svg class="check-svg" viewBox="0 0 14 14" fill="none">
+                                <path d="M2.5 7.5L5.5 10.5L11.5 3.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </span>
                         <span>Запомнить меня</span>
                     </label>
                 </div>
@@ -67,6 +72,7 @@
         import { auth } from './js/auth.js';
         import { ui } from './js/ui.js';
         import { getSupabase } from './js/supabase.js';
+        import './js/smooth-input.js';
 
         const form = document.getElementById('login-form');
         const submitBtn = document.getElementById('login-submit-btn');

@@ -18,8 +18,6 @@ export const publicPage = {
         await Promise.all([
             this.loadStatus(),
             this.loadFeatures(),
-            this.loadRoadmap(),
-            this.loadFAQ(),
             this.loadPosts(true),
             this.loadSettings(),
             this.checkAccessSection()
@@ -45,33 +43,6 @@ export const publicPage = {
             navStatus.className = `status-badge ${valLower}`;
             navStatus.innerHTML = badgeHtml;
         }
-
-        // Update hero status
-        const heroStatus = document.getElementById('hero-status-badge');
-        if (heroStatus) {
-            heroStatus.className = `status-badge ${valLower}`;
-            heroStatus.innerHTML = badgeHtml;
-        }
-
-        // Update detection section box
-        const detectBox = document.getElementById('detection-status-display');
-        if (detectBox) {
-            detectBox.innerHTML = `
-                <div class="status-large-indicator status-badge ${valLower}">
-                    <span class="status-dot pulse" style="width:14px;height:14px;"></span>
-                    <span>${st.value}</span>
-                </div>
-                <p style="color:var(--text-heading);font-weight:600;font-size:1.1rem;margin-bottom:0.5rem;">
-                    Target: ${st.game_version} · Protection: ${st.ac_version}
-                </p>
-                <p style="color:var(--muted-light);font-size:0.95rem;max-width:480px;margin:0 auto;">
-                    ${st.comment}
-                </p>
-                <div style="margin-top:1.5rem;font-family:var(--font-mono);font-size:0.8rem;color:var(--muted);">
-                    Updated: ${new Date(st.updated_at).toLocaleString('ru-RU')}
-                </div>
-            `;
-        }
     },
 
     // 2. Features Grid
@@ -93,7 +64,6 @@ export const publicPage = {
             </div>
         `).join('');
 
-        // Re-observe fade-up
         if (window.ui && window.ui.initScrollObserver) {
             window.ui.initScrollObserver();
         }
@@ -160,111 +130,28 @@ export const publicPage = {
             }
         } catch (err) {
             console.warn('Posts load error:', err);
-            // Leave static content on error
         }
     },
 
-    // 4. Roadmap
-    async loadRoadmap() {
-        const container = document.getElementById('roadmap-timeline');
-        if (!container) return;
-
-        try {
-            const items = await db.getRoadmap();
-            if (!items || items.length === 0) return;
-
-            container.innerHTML = items.map(item => {
-                const stateClass = item.state === 'done' ? 'done' : item.state === 'in_progress' ? 'in-progress' : 'planned';
-                const stateLabel = item.state === 'done' ? 'Выполнено' : item.state === 'in_progress' ? 'В разработке' : 'Запланировано';
-                return `
-                    <div class="roadmap-card fade-up in-view">
-                        <div class="roadmap-status ${stateClass}">
-                            ${item.state === 'in_progress' ? '<span class="status-dot pulse"></span>' : item.state === 'done' ? '<span class="status-dot"></span>' : ''}
-                            <span>${stateLabel}</span>
-                        </div>
-                        <h3>${item.title}</h3>
-                        <p style="color:var(--text-secondary);font-size:0.92rem;line-height:1.6;margin-top:0.5rem;">${item.description}</p>
-                    </div>
-                `;
-            }).join('');
-        } catch (err) {
-            console.warn('Roadmap load error:', err);
-        }
-    },
-
-    // 5. FAQ Accordion
-    async loadFAQ() {
-        const container = document.getElementById('faq-accordion');
-        if (!container) return;
-
-        try {
-            const faqs = await db.getFAQ();
-            if (!faqs || faqs.length === 0) return;
-
-            container.innerHTML = faqs.map((faq, idx) => `
-                <div class="accordion-item ${idx === 0 ? 'active' : ''} fade-up in-view">
-                    <div class="accordion-header">
-                        <span>${faq.question}</span>
-                        <span class="accordion-icon">+</span>
-                    </div>
-                    <div class="accordion-content">
-                        <p>${faq.answer}</p>
-                    </div>
-                </div>
-            `).join('');
-        } catch (err) {
-            console.warn('FAQ load error:', err);
-        }
-    },
-
-    // 6. Access / Download Section
+    // 4. Access / Download Section Logic
     async checkAccessSection() {
-        const accessContainer = document.getElementById('access-container');
-        if (!accessContainer) return;
+        const guestActions = document.getElementById('access-guest-actions');
+        const userActions = document.getElementById('access-user-actions');
+        const heroCtaBtn = document.getElementById('hero-cta-btn');
 
         const current = await auth.getCurrentUser();
-        const settings = await db.getSettings();
-        const downloadUrl = settings.download_url || '#';
 
-        if (current) {
-            accessContainer.innerHTML = `
-                <div class="download-card fade-up">
-                    <div class="badge badge-accent" style="margin-bottom:1rem;">Авторизованный доступ</div>
-                    <h2>Клиент Silence External 266</h2>
-                    <p style="color:var(--muted-light);margin-top:0.5rem;">
-                        Привет, <strong style="color:var(--text-heading);">${current.profile.username}</strong>! Ваша сборка готова к инициализации.
-                    </p>
-                    
-                    <div class="checklist">
-                        <div class="checklist-item"><span class="checklist-icon">✔</span> Windows 10 / 11 x64</div>
-                        <div class="checklist-item"><span class="checklist-icon">✔</span> VT-x / AMD-V включен</div>
-                        <div class="checklist-item"><span class="checklist-icon">✔</span> Запуск от имени Администратора</div>
-                        <div class="checklist-item"><span class="checklist-icon">✔</span> Скрыт от OBS / Discord</div>
-                    </div>
-
-                    <div style="display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;">
-                        <a href="${downloadUrl}" class="btn btn-primary btn-lg" target="_blank" rel="noopener">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-                            <span>Скачать клиент (.zip)</span>
-                        </a>
-                        <a href="me.html" class="btn btn-secondary btn-lg">Личный кабинет</a>
-                    </div>
-                </div>
-            `;
+        if (current && (current.profile || current.user)) {
+            if (guestActions) guestActions.style.display = 'none';
+            if (userActions) userActions.style.display = 'block';
+            if (heroCtaBtn) {
+                heroCtaBtn.setAttribute('href', 'releases/Silence_V1.0.0.zip');
+                heroCtaBtn.setAttribute('download', '');
+                heroCtaBtn.innerHTML = `<span>Скачать архив V1.0.0</span><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>`;
+            }
         } else {
-            accessContainer.innerHTML = `
-                <div class="download-card fade-up">
-                    <div class="badge badge-cyan" style="margin-bottom:1rem;">Приватный релиз</div>
-                    <h2>Доступ ограничен</h2>
-                    <p style="color:var(--muted-light);max-width:520px;margin:0.5rem auto 2rem auto;">
-                        Для загрузки клиента Silence 266, получения инструкций и обновлений требуется авторизация в закрытой системе.
-                    </p>
-                    <div style="display:flex;gap:1rem;justify-content:center;">
-                        <a href="login.html" class="btn btn-primary btn-lg">Войти в систему</a>
-                        <a href="register.html" class="btn btn-secondary btn-lg">Регистрация</a>
-                    </div>
-                </div>
-            `;
+            if (guestActions) guestActions.style.display = 'flex';
+            if (userActions) userActions.style.display = 'none';
         }
     },
 
@@ -328,21 +215,6 @@ export const publicPage = {
             const isOpen = bodyEl.classList.contains('open');
             bodyEl.classList.toggle('open', !isOpen);
             btn.textContent = isOpen ? 'Читать полностью' : 'Свернуть';
-        });
-
-        // FAQ Accordion click handler
-        document.addEventListener('click', (e) => {
-            const header = e.target.closest('.accordion-header');
-            if (!header) return;
-
-            const item = header.closest('.accordion-item');
-            if (!item) return;
-
-            const wasActive = item.classList.contains('active');
-            document.querySelectorAll('.accordion-item').forEach(el => el.classList.remove('active'));
-            if (!wasActive) {
-                item.classList.add('active');
-            }
         });
     }
 };

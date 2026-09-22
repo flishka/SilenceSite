@@ -24,6 +24,26 @@ export const ui = {
                 navbar.classList.remove('scrolled');
             }
         });
+
+        // Smooth scroll for all internal anchor links (#features, #metrics, etc.)
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', (e) => {
+                const href = anchor.getAttribute('href');
+                if (!href || href === '#') return;
+                const targetEl = document.querySelector(href);
+                if (targetEl) {
+                    e.preventDefault();
+                    const navOffset = 76;
+                    const elPos = targetEl.getBoundingClientRect().top + window.pageYOffset;
+                    const offsetPos = elPos - navOffset;
+
+                    window.scrollTo({
+                        top: offsetPos,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
     },
 
     initFadeObserver() {

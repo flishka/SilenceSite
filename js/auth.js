@@ -143,10 +143,12 @@ export const auth = {
         return current;
     },
 
-    // 7. Auto-update Public Nav Links
+    // 7. Auto-update Public Nav Links & Access Download Section
     async updateNavAuthUI() {
         const navAuthSlot = document.getElementById('nav-auth-slot');
-        if (!navAuthSlot) return;
+        const guestActions = document.getElementById('access-guest-actions');
+        const userActions = document.getElementById('access-user-actions');
+        const heroCtaBtn = document.getElementById('hero-cta-btn');
 
         const current = await this.getCurrentUser();
         if (current && (current.profile || current.user)) {
@@ -155,24 +157,39 @@ export const auth = {
                 || 'user';
             const isAdmin = current.profile && current.profile.role === 'ADMIN';
 
-            navAuthSlot.innerHTML = `
-                <div class="nav-user-container">
-                    ${isAdmin ? `<a href="admin.html" class="nav-admin-badge" title="Панель администратора">Админ</a>` : ''}
-                    <span class="nav-username">@${username}</span>
-                    <button id="nav-logout-btn" class="nav-logout-btn" type="button" title="Выйти из учетной записи">
-                        Выйти
-                    </button>
-                </div>
-            `;
+            if (navAuthSlot) {
+                navAuthSlot.innerHTML = `
+                    <div class="nav-user-container">
+                        ${isAdmin ? `<a href="admin.html" class="nav-admin-badge" title="Панель администратора">Админ</a>` : ''}
+                        <span class="nav-username">@${username}</span>
+                        <button id="nav-logout-btn" class="nav-logout-btn" type="button" title="Выйти из учетной записи">
+                            Выйти
+                        </button>
+                    </div>
+                `;
 
-            document.getElementById('nav-logout-btn')?.addEventListener('click', async (e) => {
-                e.preventDefault();
-                await this.logout();
-            });
+                document.getElementById('nav-logout-btn')?.addEventListener('click', async (e) => {
+                    e.preventDefault();
+                    await this.logout();
+                });
+            }
+
+            // Logged-in access CTA
+            if (guestActions) guestActions.style.display = 'none';
+            if (userActions) userActions.style.display = 'block';
+            if (heroCtaBtn) {
+                heroCtaBtn.setAttribute('href', 'releases/Silence_V1.0.0.zip');
+                heroCtaBtn.setAttribute('download', '');
+                heroCtaBtn.innerHTML = `<span>Скачать архив V1.0.0</span><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>`;
+            }
         } else {
-            navAuthSlot.innerHTML = `
-                <a href="login.html" class="btn btn-ghost btn-sm">Войти</a>
-            `;
+            if (navAuthSlot) {
+                navAuthSlot.innerHTML = `
+                    <a href="login.html" class="btn btn-ghost btn-sm">Войти</a>
+                `;
+            }
+            if (guestActions) guestActions.style.display = 'flex';
+            if (userActions) userActions.style.display = 'none';
         }
     }
 };
